@@ -8,7 +8,7 @@ play-by-play xLegacy/yLegacy, and Blueprint x/y):
   * the sign of x follows NBA's convention (LOC_X < 0 <=> SHOT_ZONE_AREA "Left Side").
 
 Zone rules were derived from and validated against 540,627 historical ShotChartDetail
-shots (2022-23 .. 2024-25); see `validate_zone_rules` and docs/DATA_MATCHING.md.
+shots (2022-23 .. 2024-25); see `validate_zone_rules` and docs/methodology/DATA_MATCHING.md.
 """
 
 from __future__ import annotations

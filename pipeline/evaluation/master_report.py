@@ -526,7 +526,7 @@ def write_master_report(summary, res, t_test, t_cal, t_arch_cal, t_arch_test, di
     A("")
     A("## 2. Data and coverage")
     A("")
-    A(f"Season ingestion (`docs/DATA_MATCHING.md`, `data/reports/season/COVERAGE_REPORT.md`): {man['games_seen']} games seen, "
+    A(f"Season ingestion (`docs/methodology/DATA_MATCHING.md`, `data/reports/season/COVERAGE_REPORT.md`): {man['games_seen']} games seen, "
       f"{man['status_verified']} verified, {man['verified_matched']:,} of {man['verified_official_fga']:,} official FGA in verified games "
       f"matched to a Blueprint record ({100 * man['verified_matched'] / max(man['verified_official_fga'], 1):.1f}%). Official shots without a "
       "Blueprint record are absent from Blueprint's published data (the page contains no record for them); no xFG is invented for them, and "
@@ -671,7 +671,7 @@ def write_master_report(summary, res, t_test, t_cal, t_arch_cal, t_arch_test, di
     A("* One partial season (early 2026-27); the test set covers the newest dates only, so seasonal drift beyond them is untested.")
     A(f"* Blueprint published tracking for {100 * man['verified_matched'] / max(man['verified_official_fga'], 1):.1f}% of official "
       "attempts (median game ~94%; three games only partially published). Missing shots skew toward misses, rim/paint attempts and "
-      "putbacks (`docs/DATA_MATCHING.md`), so the evaluated population is slightly easier than all FGA; Master and NBA xFG are "
+      "putbacks (`docs/methodology/DATA_MATCHING.md`), so the evaluated population is slightly easier than all FGA; Master and NBA xFG are "
       "compared on the identical tracked shots.")
     A("* Player priors did not help yet; with more in-season data (and a longer test window) this should be re-tested rather than "
       "assumed. The fallback no-tracking model used for untracked shots in the analytics exports is less accurate (see the "

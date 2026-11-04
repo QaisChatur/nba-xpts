@@ -2,14 +2,11 @@
 """
 Prepare all backend assets needed before frontend implementation.
 
-Outputs:
-- data/processed/xpts_player_specific_predictions_all_games.csv
-- data/processed/game_flow_all_games.csv
-- data/processed/player_zone_shottype_summary.csv
-- data/processed/player_action_summary.csv
-- data/processed/clip_index_all_games.csv
-- data/db_stage/{games,shots_xpts,game_flow_events,player_zone_shottype_summary}.csv
-- models/xpts_player_specific_model.pkl
+Outputs (data/processed/legacy/backend_prep/):
+- xpts_player_specific_predictions_all_games.csv, game_flow_all_games.csv
+- player_zone_shottype_summary.csv, player_action_summary.csv, clip_index_all_games.csv
+- db_stage/games.csv (the other DB tables are loaded from the files above)
+- models/experiments/backend_prep/xpts_player_specific_model.pkl
 """
 
 from __future__ import annotations
@@ -37,7 +34,7 @@ except ImportError as exc:
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 RAW_DIR = PROJECT_ROOT / "data" / "raw" / "historical"
-PROCESSED_DIR = PROJECT_ROOT / "data" / "processed" / "legacy"
+PROCESSED_DIR = PROJECT_ROOT / "data" / "processed" / "legacy" / "backend_prep"
 DB_STAGE_DIR = PROCESSED_DIR / "db_stage"
 # Writes go to an experiments folder; the original Model A in models/legacy/model_a is never overwritten.
 MODELS_DIR = PROJECT_ROOT / "models" / "experiments" / "backend_prep"
@@ -725,9 +722,6 @@ def run_pipeline(seasons: List[str] | None = None, random_seed: int = 42) -> Non
         .reset_index()
     )
     games.to_csv(DB_STAGE_DIR / "games.csv", index=False)
-    score_df.to_csv(DB_STAGE_DIR / "shots_xpts.csv", index=False)
-    flow.to_csv(DB_STAGE_DIR / "game_flow_events.csv", index=False)
-    zone_summary.to_csv(DB_STAGE_DIR / "player_zone_shottype_summary.csv", index=False)
 
     # Persist model and metadata
     joblib.dump(clf, MODEL_PATH)
@@ -737,11 +731,11 @@ def run_pipeline(seasons: List[str] | None = None, random_seed: int = 42) -> Non
         "rows_scored": int(len(score_df)),
         "seasons_scored": sorted(score_df["SEASON"].astype(str).unique().tolist()),
         "feature_count": len(feature_cols),
-        "prediction_path": str(PREDICTIONS_PATH),
-        "game_flow_path": str(GAME_FLOW_PATH),
-        "zone_summary_path": str(ZONE_SUMMARY_PATH),
-        "action_summary_path": str(ACTION_SUMMARY_PATH),
-        "clip_index_path": str(CLIP_INDEX_PATH),
+        "prediction_path": str(PREDICTIONS_PATH.relative_to(PROJECT_ROOT)),
+        "game_flow_path": str(GAME_FLOW_PATH.relative_to(PROJECT_ROOT)),
+        "zone_summary_path": str(ZONE_SUMMARY_PATH.relative_to(PROJECT_ROOT)),
+        "action_summary_path": str(ACTION_SUMMARY_PATH.relative_to(PROJECT_ROOT)),
+        "clip_index_path": str(CLIP_INDEX_PATH.relative_to(PROJECT_ROOT)),
     }
     MODEL_META_PATH.write_text(json.dumps(metadata, indent=2), encoding="utf-8")
 

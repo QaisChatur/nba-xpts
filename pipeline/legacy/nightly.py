@@ -330,13 +330,13 @@ def matching_report(ctx: dict, path: Path) -> None:
         "## Sources",
         "",
         "* **Blueprint** (NBA xFG + tracking): `data/raw/blueprint/2026-27/games/*.csv`, cross-checked row by row against `raw/*.json`.",
-        "* **Official play-by-play + box score**: NBA.com game page `__NEXT_DATA__` payload, cached in `data/raw/nba_pages/`. "
+        "* **Official play-by-play + box score**: NBA.com game page `__NEXT_DATA__` payload, cached in `data/raw/nba_pages/2026-27/`. "
         "ShotChartDetail (stats.nba.com) and cdn.nba.com liveData were not reachable from this environment (timeout / HTTP 403). "
         "The play-by-play supplies the ShotChartDetail fields directly (event number, player, team, period, clock, LOC_X/LOC_Y as "
         "xLegacy/yLegacy, ACTION_TYPE as subType, result); SHOT_DISTANCE and SHOT_ZONE_BASIC are derived with rules validated on "
         "540,627 historical ShotChartDetail shots (100% and 99.98% agreement).",
         "",
-        "## Schedule validation (cached `schedule_days/%s.json`)" % ctx["date"],
+        "## Schedule validation (cached games listing `%s.json`)" % ctx["date"],
         "",
         md_table(ctx["schedule"][["game_id", "away", "home", "official_date_et", "status", "flags"]]),
         "",

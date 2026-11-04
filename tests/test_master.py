@@ -188,3 +188,25 @@ def test_training_is_deterministic(family, params):
         m = make_model(family, ["a", "b", "zone_code"], params, seed=42, n_estimators=50)
         preds.append(m.fit(X.iloc[:600], y.iloc[:600]).predict(X.iloc[600:]))
     assert np.array_equal(preds[0], preds[1])
+
+
+# --------------------------------------------------------------------------- serving / V1 preservation
+
+
+def test_active_model_is_master_v1_and_tracked_metadata_exists():
+    from pipeline.inference import active_model_dir
+    d = active_model_dir()
+    assert d.name == "master_master_v1_20261104T210006"
+    assert (d / "model_spec.json").exists() and (d / "metrics.json").exists()
+
+
+@pytest.mark.slow
+def test_master_v1_benchmark_reproduces_exactly():
+    from pipeline import config
+    from pipeline.inference import active_model_dir
+    d = active_model_dir()
+    if not (d / "model.cbm").exists() or not (config.MASTER_DATASET_DIR / "master_v1" / "master_shots.parquet").exists():
+        pytest.skip("Master V1 binary or dataset not present (outside Git)")
+    from pipeline.evaluation.verify import verify_master
+    out = verify_master(d)
+    assert out["status"] == "passed" and out["prediction_max_abs_diff"] == 0.0

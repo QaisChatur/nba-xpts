@@ -1,4 +1,4 @@
-"""Validation of cached schedule-day discovery files (e.g. schedule_days/2026-10-28.json).
+"""Validation of cached schedule-day discovery files (e.g. data/raw/nba_listings/2026-27/2026-10-28.json).
 
 The Blueprint scraper discovers games by regex-matching game links on nba.com/games?date=D.
 Such pages can link games from other dates (previews, recaps), so discovered games are
@@ -13,12 +13,12 @@ from pathlib import Path
 
 import pandas as pd
 
-from pipeline.config import BLUEPRINT_SCHEDULE_DIR, GAME_PAGES_DIR
+from pipeline.config import GAMES_LISTING_DIR, GAME_PAGES_DIR
 from pipeline.ingestion.nba_pages import cache_paths, load_game_page, parse_game_page
 from pipeline.utils import require
 
 
-def load_schedule_day(day: str, schedule_dir: Path = BLUEPRINT_SCHEDULE_DIR) -> pd.DataFrame:
+def load_schedule_day(day: str, schedule_dir: Path = GAMES_LISTING_DIR) -> pd.DataFrame:
     path = schedule_dir / f"{day}.json"
     require(path.exists(), f"schedule cache not found: {path}")
     games = json.loads(path.read_text(encoding="utf-8"))
@@ -28,7 +28,7 @@ def load_schedule_day(day: str, schedule_dir: Path = BLUEPRINT_SCHEDULE_DIR) -> 
     return df
 
 
-def validate_schedule_day(day: str, schedule_dir: Path = BLUEPRINT_SCHEDULE_DIR,
+def validate_schedule_day(day: str, schedule_dir: Path = GAMES_LISTING_DIR,
                           pages_dir: Path = GAME_PAGES_DIR) -> pd.DataFrame:
     """One row per discovered game with a `status` of verified / conflict / unverified / wrong_date."""
     df = load_schedule_day(day, schedule_dir)

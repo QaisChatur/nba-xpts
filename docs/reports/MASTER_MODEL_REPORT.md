@@ -16,7 +16,7 @@ Run `20261104T210006`, model `master_master_v1_20261104T210006`, dataset `master
 
 ## 2. Data and coverage
 
-Season ingestion (`docs/DATA_MATCHING.md`, `data/reports/season/COVERAGE_REPORT.md`): 107 games seen, 107 verified, 17,389 of 18,852 official FGA in verified games matched to a Blueprint record (92.2%). Official shots without a Blueprint record are absent from Blueprint's published data (the page contains no record for them); no xFG is invented for them, and they are excluded from training/evaluation but still contribute (as earlier-game outcomes) to in-season player priors.
+Season ingestion (`docs/methodology/DATA_MATCHING.md`, `data/reports/season/COVERAGE_REPORT.md`): 107 games seen, 107 verified, 17,389 of 18,852 official FGA in verified games matched to a Blueprint record (92.2%). Official shots without a Blueprint record are absent from Blueprint's published data (the page contains no record for them); no xFG is invented for them, and they are excluded from training/evaluation but still contribute (as earlier-game outcomes) to in-season player priors.
 
 ## 3. Feature engineering
 
@@ -306,7 +306,7 @@ Each block is scored by the selected configuration (fixed hyperparameters, no re
 ## 13. Limitations
 
 * One partial season (early 2026-27); the test set covers the newest dates only, so seasonal drift beyond them is untested.
-* Blueprint published tracking for 92.2% of official attempts (median game ~94%; three games only partially published). Missing shots skew toward misses, rim/paint attempts and putbacks (`docs/DATA_MATCHING.md`), so the evaluated population is slightly easier than all FGA; Master and NBA xFG are compared on the identical tracked shots.
+* Blueprint published tracking for 92.2% of official attempts (median game ~94%; three games only partially published). Missing shots skew toward misses, rim/paint attempts and putbacks (`docs/methodology/DATA_MATCHING.md`), so the evaluated population is slightly easier than all FGA; Master and NBA xFG are compared on the identical tracked shots.
 * Player priors did not help yet; with more in-season data (and a longer test window) this should be re-tested rather than assumed. The fallback no-tracking model used for untracked shots in the analytics exports is less accurate (see the context + player row).
 * Tracking fields are Blueprint's published values; release time is not measured on most rim attempts (recorded as 0) and is capped at 1.0 s.
 * No defender location/height beyond Blueprint's contest distance/height; defender priors are in-season only and very sparse.

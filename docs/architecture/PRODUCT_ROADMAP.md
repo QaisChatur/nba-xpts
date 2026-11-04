@@ -8,8 +8,8 @@ Postgres product can be added without rewriting the pipeline.
 | --- | --- | --- | --- |
 | Ingestion | `pipeline/ingestion/` | `data/raw/...` (immutable, cached) | scheduled job (nightly) |
 | Training | `pipeline/features/`, `pipeline/training/` | `models/master/<version>/` | offline job, manual promotion |
-| Inference | `pipeline/inference.py`, `pipeline/exports.py` | `data/processed/master/predictions/<version>/` | FastAPI endpoint wrapping `predict_shots` |
-| Serving analytics | `pipeline/analytics/`, `pipeline/exports.py` | `data/processed/analytics/season/<version>/` | Postgres tables + read API |
+| Inference | `pipeline/inference.py`, `pipeline/analytics/season_exports.py` | `data/processed/master/predictions/<version>/` | FastAPI endpoint wrapping `predict_shots` |
+| Serving analytics | `pipeline/analytics/`, `pipeline/analytics/season_exports.py` | `data/processed/analytics/season/<version>/` | Postgres tables + read API |
 
 ## Analytics outputs (built by `python -m pipeline update-analytics`)
 
@@ -41,7 +41,7 @@ not publish. Rows from games in the model-fit partition are in-sample for the fi
 3. **Postgres schema:**
    - `games`, `shots` (keyed by `shot_uid`), `shot_predictions` (keyed by `shot_uid` and
      `model_version`), `team_game_expected`, `standings_snapshots`;
-   - load from the parquet/JSON exports. `sql/supabase_schema.sql` is the legacy starting point.
+   - load from the parquet/JSON exports. `scripts/legacy/supabase_schema.sql` is the legacy starting point.
 4. **API (FastAPI):**
    - `GET /games/{id}/timeline`, `GET /standings?model=...`, `GET /shots?player=&zone=&date=`,
      `GET /highlights/{date}`;

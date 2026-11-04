@@ -33,15 +33,15 @@ is statistically indistinguishable from NBA's own xFG** and far better than the 
 
 | Phase | Status | Evidence |
 | --- | --- | --- |
-| 1 Repo cleanup and GitHub preparation | done locally; **push awaiting your decision** (the existing remote is public) | `.gitignore`, `docs/DATA_FILES.md`, secrets scan below |
-| 2 Season-wide ingestion | done: 107/107 games verified | `data/reports/season/COVERAGE_REPORT.md`, `docs/DATA_MATCHING.md` |
+| 1 Repo cleanup and GitHub preparation | done; pushed to `origin/main` (public repository, with approval); reorganized again later, see `docs/architecture/MIGRATION_MANIFEST.md` | `.gitignore`, `docs/architecture/DATA_FILES.md`, secrets scan below |
+| 2 Season-wide ingestion | done: 107/107 games verified | `data/reports/season/COVERAGE_REPORT.md`, `docs/methodology/DATA_MATCHING.md` |
 | 3 Master shot dataset | done: 18,852 FGA, 17,389 tracked | `data/processed/master/master_v1/`, `configs/features.yaml` |
 | 4 Model development | done: 4 families × 8 feature sets | `models/experiments/master_runs/20261104T210006/` |
 | 5 Evaluation | done | `docs/reports/MASTER_MODEL_REPORT.md`, `docs/reports/figures/master/` |
 | 6 Data sufficiency | assessed: exploratory | report §12 |
 | 7 Final model + inference | done | `models/master/master_master_v1_20261104T210006/`, `pipeline.inference.predict_shots` |
 | 8 Report | done | `docs/reports/MASTER_MODEL_REPORT.md` |
-| 9 Product analytics | done (files only) | `data/processed/analytics/season/<version>/`, `docs/PRODUCT_ROADMAP.md` |
+| 9 Product analytics | done (files only) | `data/processed/analytics/season/<version>/`, `docs/architecture/PRODUCT_ROADMAP.md` |
 | 10 Handoff | done | 105 tests pass; clean-environment install passes; docs below |
 
 ## Data
@@ -55,8 +55,8 @@ is statistically indistinguishable from NBA's own xFG** and far better than the 
   4th-quarter attempts. Models and NBA xFG are compared on identical tracked shots, and no NBA xFG is
   invented for untracked shots.
 * **Play-by-play formats:** three games use NBA's live play-by-play format. It is normalized to the
-  ShotChartDetail vocabulary (`docs/DATA_MATCHING.md`).
-* **Leakage controls** (`docs/MODEL_METHODOLOGY.md`):
+  ShotChartDetail vocabulary (`docs/methodology/DATA_MATCHING.md`).
+* **Leakage controls** (`docs/methodology/MODEL_METHODOLOGY.md`):
   - pre-shot score only;
   - in-season priors only from earlier dates;
   - historical baseline fitted on 2022-25;
@@ -67,14 +67,14 @@ is statistically indistinguishable from NBA's own xFG** and far better than the 
 
 * **Secrets scan:** no secrets, tokens or credentials in the working tree or in Git history (2
   commits). `.env.example` contains placeholders only.
-  - The original notebook's saved outputs contain local absolute paths with the macOS username. This
-    is already in the existing pushed history and is not a credential.
+  - Local absolute paths in the legacy notebook's saved outputs were replaced by `<project_root>`
+    (they remain in earlier commits; no credentials were ever present).
 * **What gets committed:** code, configs, docs, report figures and a one-game sample, about 2.5 MB in
   total. Raw and processed NBA data, model binaries and experiment runs are git-ignored (third-party
-  data, about 2 GB; restore steps in `docs/DATA_FILES.md`). The Model A pickle stays local and
+  data, about 1.2 GB; restore steps in `docs/architecture/DATA_FILES.md`). The Model A pickle stays local and
   untouched.
-* **Remote:** `origin` = `https://github.com/QaisChatur/nba-xpts.git`, which is **public**. Pushing
-  this work there needs your explicit approval; the alternative is a new private repository.
+* **Remote:** `origin` = `https://github.com/QaisChatur/nba-xpts.git` (public). Pushed with your approval;
+  normal pushes only, never force.
 
 ## Limitations
 

@@ -20,4 +20,4 @@ pyyaml==6.0.3
 # Tests
 pytest==9.2.0
 
-# Database loading (scripts/legacy/load_db_stage_to_postgres.py only) lives in requirements-db.txt.
+# Database loading (scripts/legacy/load_db_stage_to_postgres.py only) lives in scripts/legacy/requirements-db.txt.

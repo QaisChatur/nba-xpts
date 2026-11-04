@@ -1,6 +1,6 @@
 # 2026-27 Blueprint coverage report
 
-Generated 2026-11-04T20:55:53+00:00 from `data/raw/blueprint/2026-27/season_manifest.json`.
+Generated 2026-11-04T21:48:36+00:00 from `data/raw/blueprint/2026-27/season_manifest.json`.
 
 ## Game status
 

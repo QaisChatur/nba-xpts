@@ -1,9 +1,9 @@
 """Run the full xPTS pipeline: build features -> train XGBoost -> predict.
 
 Usage:
-    python scripts/run_pipeline.py
-    python scripts/run_pipeline.py --skip-features   # reuse existing features artifact
-    python scripts/run_pipeline.py --skip-train      # reuse existing model
+    python scripts/model_a/run_pipeline.py
+    python scripts/model_a/run_pipeline.py --skip-features   # reuse existing features artifact
+    python scripts/model_a/run_pipeline.py --skip-train      # reuse existing model
 """
 
 from __future__ import annotations
@@ -23,7 +23,7 @@ log = setup_logging("run_pipeline")
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--skip-features", action="store_true", help="reuse data/processed/xpts_features.pkl")
+    parser.add_argument("--skip-features", action="store_true", help="reuse data/processed/legacy/model_a/xpts_features.pkl")
     parser.add_argument("--skip-train", action="store_true", help="score with the original Model A instead of retraining")
     args = parser.parse_args()
 

@@ -21,8 +21,8 @@ python -m pip install -r requirements.txt               # macOS: brew install li
 python -m pytest -m "not slow"                          # runs on the committed samples only
 ```
 
-Raw and processed data are **not** in Git (third-party NBA data, about 2 GB). To restore or rebuild
-them, see [`docs/DATA_FILES.md`](docs/DATA_FILES.md). A different data root can be used with
+Raw and processed data are **not** in Git (third-party NBA data, about 1.2 GB). To restore or rebuild
+them, see [`docs/architecture/DATA_FILES.md`](docs/architecture/DATA_FILES.md). A different data root can be used with
 `XPTS_DATA_DIR=/path/to/data`.
 
 ## Pipeline commands
@@ -36,6 +36,7 @@ python -m pipeline train-master [--quick]                 # tune/select/calibrat
 python -m pipeline evaluate-master --run <run_dir>        # re-run evaluation + report for an existing run
 python -m pipeline export-predictions                     # season predictions (no look-ahead priors)
 python -m pipeline update-analytics                       # Game Center, standings, explorer, highlights
+python -m pipeline verify-master                          # re-score the active Master model's test set; must match exactly
 python -m pipeline verify-model-a                         # Model A loads safely and reproduces 2024-25 results
 python -m pipeline run --date 2026-10-28                  # legacy single-night Model A vs NBA xFG pipeline
 ```
@@ -54,27 +55,30 @@ preds = predict_shots(shots_df)          # validates inputs; returns master_xfg,
 | `pipeline/ingestion/` | Blueprint + NBA.com page fetching/parsing, season manifest and verification |
 | `pipeline/matching/` | court/clock normalization and Blueprint ↔ official event matching |
 | `pipeline/features/` | shot context, play-by-play context, historical baseline, player/defender priors, dataset assembly |
-| `pipeline/training/` | chronological splits, model families, Optuna tuning, calibration, evaluation + report |
-| `pipeline/inference.py`, `pipeline/exports.py` | `predict_shots`, season predictions, analytics exports |
+| `pipeline/training/` | chronological splits, model families, Optuna tuning, calibration |
+| `pipeline/evaluation/` | metrics, bootstrap, Master evaluation report, artifact verification |
+| `pipeline/inference.py`, `pipeline/analytics/season_exports.py` | `predict_shots`, season predictions, analytics exports |
 | `pipeline/analytics/` | Game Center timelines, expected standings, shot explorer, rankings |
-| `pipeline/legacy/`, `scripts/model_a/`, `scripts/legacy/` | Model A loader/assets, original Model A training scripts, older tools |
-| `configs/` | feature groups and forbidden columns, training and evaluation settings |
-| `models/master/<version>/` | versioned Master artifacts (never overwritten; ignored by Git) |
+| `pipeline/legacy/`, `scripts/model_a/`, `scripts/legacy/` | Model A loader, single-night pipeline, original Model A training scripts, legacy backend/DB tools |
+| `configs/` | feature groups and forbidden columns, training and evaluation settings, active served model (`serving.yaml`) |
+| `models/master/<version>/` | versioned Master artifacts (never overwritten; binaries ignored by Git, metadata committed) |
 | `models/legacy/` | Model A metadata (the pickle stays outside Git), exploratory Model B metadata |
 | `data/samples/` | small committed fixture (one game) used by tests |
-| `docs/` | methodology, data matching, data files, roadmap, frontend data contract, reports |
-| `notebooks/original/xpts.ipynb` | the original Model A notebook |
+| `docs/methodology/`, `docs/architecture/`, `docs/reports/`, `docs/legacy/` | how the models and data work; data layout, contracts, roadmap, migration manifest; generated reports; legacy notes |
+| `notebooks/legacy/model_a_original.ipynb` | the original Model A notebook |
 
 ## Docs
 
-* [`docs/MODEL_METHODOLOGY.md`](docs/MODEL_METHODOLOGY.md): features, leakage controls, training
+* [`docs/methodology/MODEL_METHODOLOGY.md`](docs/methodology/MODEL_METHODOLOGY.md): features, leakage controls, training
   and evaluation protocol.
-* [`docs/DATA_MATCHING.md`](docs/DATA_MATCHING.md): sources, season ingestion, matching, coverage
+* [`docs/methodology/DATA_MATCHING.md`](docs/methodology/DATA_MATCHING.md): sources, season ingestion, matching, coverage
   and missing-shot analysis.
-* [`docs/DATA_FILES.md`](docs/DATA_FILES.md): data layout, storage policy, restore steps.
-* [`docs/PRODUCT_ROADMAP.md`](docs/PRODUCT_ROADMAP.md): analytics outputs and the path to a product.
-* [`docs/FRONTEND_DATA_CONTRACT.md`](docs/FRONTEND_DATA_CONTRACT.md): JSON schemas for frontend
+* [`docs/architecture/DATA_FILES.md`](docs/architecture/DATA_FILES.md): data layout, storage policy, restore steps.
+* [`docs/architecture/PRODUCT_ROADMAP.md`](docs/architecture/PRODUCT_ROADMAP.md): analytics outputs and the path to a product.
+* [`docs/architecture/FRONTEND_DATA_CONTRACT.md`](docs/architecture/FRONTEND_DATA_CONTRACT.md): JSON schemas for frontend
   consumers.
+* [`docs/architecture/MIGRATION_MANIFEST.md`](docs/architecture/MIGRATION_MANIFEST.md): what moved where in the
+  repository cleanup.
 
 ## Data and rights
 

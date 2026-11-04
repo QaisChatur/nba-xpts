@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """
-Load DB-staging CSVs into Postgres/Supabase tables.
+Load the legacy backend-prep CSVs (scripts/legacy/prepare_backend_assets.py) into Postgres/Supabase tables.
 
 Usage:
-  export DATABASE_URL='postgresql+psycopg://user:pass@host:5432/postgres'
-  python scripts/load_db_stage_to_postgres.py --replace
+  pip install -r scripts/legacy/requirements-db.txt
+  export DATABASE_URL='postgresql+psycopg://<user>:<password>@<host>:5432/postgres'
+  python scripts/legacy/load_db_stage_to_postgres.py --replace
 """
 
 from __future__ import annotations
@@ -18,12 +19,13 @@ from sqlalchemy import create_engine, text
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-DB_STAGE_DIR = PROJECT_ROOT / "data" / "processed" / "legacy" / "db_stage"
+BACKEND_PREP_DIR = PROJECT_ROOT / "data" / "processed" / "legacy" / "backend_prep"
 
+# Each table is read from its single canonical file (no duplicated db_stage copies).
 TABLE_MAP = {
-    "games.csv": "games",
-    "shots_xpts.csv": "shots_xpts",
-    "game_flow_events.csv": "game_flow_events",
+    "db_stage/games.csv": "games",
+    "xpts_player_specific_predictions_all_games.csv": "shots_xpts",
+    "game_flow_all_games.csv": "game_flow_events",
     "player_zone_shottype_summary.csv": "player_zone_shottype_summary",
 }
 
@@ -48,7 +50,7 @@ def main() -> None:
 
     with engine.begin() as conn:
         for filename, table in TABLE_MAP.items():
-            path = DB_STAGE_DIR / filename
+            path = BACKEND_PREP_DIR / filename
             if not path.exists():
                 print(f"Skipping missing file: {path}")
                 continue

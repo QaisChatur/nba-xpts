@@ -81,7 +81,7 @@ def _state_tables(state: pd.DataFrame):
 
 class MasterModel:
     def __init__(self, model_dir: Path | None = None):
-        model_dir = Path(model_dir) if model_dir else latest_model_dir()
+        model_dir = Path(model_dir) if model_dir else active_model_dir()
         self.dir = model_dir
         self.spec = json.loads((model_dir / "model_spec.json").read_text())
         self.meta = json.loads((model_dir / "metadata.json").read_text())
@@ -103,10 +103,13 @@ class MasterModel:
         return cols
 
 
-def latest_model_dir(root: Path = MASTER_MODELS_DIR) -> Path:
-    dirs = sorted(p for p in root.glob("master_*") if (p / "model_spec.json").exists())
-    require(dirs, f"no saved Master model under {root}")
-    return dirs[-1]
+def active_model_dir(root: Path = MASTER_MODELS_DIR) -> Path:
+    """The promoted model named in configs/serving.yaml."""
+    cfg = yaml.safe_load((CONFIGS_DIR / "serving.yaml").read_text())
+    d = root / cfg["active_master_model"]
+    require((d / "model_spec.json").exists(), f"active model {d} (configs/serving.yaml) not found")
+    return d
+
 
 
 def validate_inputs(shots: pd.DataFrame, required: list[str]) -> None:

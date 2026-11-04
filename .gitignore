@@ -33,7 +33,7 @@ Thumbs.db
 .idea/
 .vscode/
 
-# ---- data: kept outside Git (see docs/DATA_FILES.md for locations and restore steps)
+# ---- data: kept outside Git (see docs/architecture/DATA_FILES.md for locations and restore steps)
 data/raw/
 data/interim/
 data/processed/
@@ -53,3 +53,6 @@ data/processed/
 *.ubj
 models/experiments/
 models/**/*.bin
+models/**/model.xgb.json
+models/**/model.lgb.txt
+models/**/*.parquet

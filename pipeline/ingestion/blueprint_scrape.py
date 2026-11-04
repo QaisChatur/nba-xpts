@@ -22,7 +22,7 @@ import urllib.error
 import urllib.request
 from pathlib import Path
 
-from pipeline.config import BLUEPRINT_DIR
+from pipeline.config import BLUEPRINT_DIR, GAMES_LISTING_DIR
 from pipeline.utils import get_logger, sha256_bytes, utc_now, write_json
 
 log = get_logger("blueprint_scrape")
@@ -237,11 +237,11 @@ def fetch_blueprint_game(game_id: str, away: str, home: str, game_date: str, out
     return meta
 
 
-def fetch_games_listing(day: str, out_dir: Path = BLUEPRINT_DIR, allow_network: bool = False,
+def fetch_games_listing(day: str, listing_dir: Path = GAMES_LISTING_DIR, allow_network: bool = False,
                         refresh: bool = False) -> list[dict]:
     """Game links on nba.com/games?date=DAY (cached). The listing can include games from other
     dates; callers must verify each game's date against its official game page."""
-    cache = out_dir / "schedule_days" / f"{day}.json"
+    cache = listing_dir / f"{day}.json"
     if cache.exists() and not refresh:
         return json.loads(cache.read_text(encoding="utf-8"))
     if not allow_network:

@@ -7,7 +7,7 @@ import json
 import sys
 
 from pipeline.config import (
-    BLUEPRINT_GAMES_DIR, BLUEPRINT_RAW_DIR, BLUEPRINT_SCHEDULE_DIR, DASH_CLOSEST_10FT_PATH, DASH_CLOSEST_PATH,
+    BLUEPRINT_GAMES_DIR, BLUEPRINT_RAW_DIR, GAMES_LISTING_DIR, DASH_CLOSEST_10FT_PATH, DASH_CLOSEST_PATH,
     GAME_PAGES_DIR, HISTORICAL_FEATURES_PATH, HISTORICAL_PREDICTIONS_PATH, MODEL_A_ASSETS_DIR,
     MODEL_A_HISTORICAL_METRICS_PATH, MODEL_A_PATH, RAW_SHOTS_PATH,
 )
@@ -19,7 +19,7 @@ REQUIRED = {
     "PlayerDashPtShots closest defender": DASH_CLOSEST_PATH,
     "PlayerDashPtShots closest defender 10ft+": DASH_CLOSEST_10FT_PATH,
     "Blueprint game CSVs": BLUEPRINT_GAMES_DIR,
-    "Blueprint schedule-day cache": BLUEPRINT_SCHEDULE_DIR,
+    "NBA.com games-listing cache": GAMES_LISTING_DIR,
 }
 OPTIONAL = {
     "Blueprint raw JSON (row cross-check, team IDs)": BLUEPRINT_RAW_DIR,
@@ -77,7 +77,7 @@ def cmd_run(args) -> int:
     from pipeline.env import ensure_xgboost_importable
     ensure_xgboost_importable()
     from pipeline.legacy import model_a
-    from pipeline import run
+    from pipeline.legacy import nightly as run
     if not (MODEL_A_ASSETS_DIR / "assets_meta.json").exists():
         model_a.build_inference_assets()
     run.run_date(args.date, allow_network=args.allow_network)
@@ -117,7 +117,7 @@ def cmd_train_master(args) -> int:
     run_dir = train.run_training(quick=args.quick, model_version=args.model_version)
     print(f"run: {rel(run_dir)}")
     if not args.no_eval:
-        from pipeline.training import evaluate
+        from pipeline.evaluation import master_report as evaluate
         evaluate.evaluate_run(run_dir)
         print(f"report: {rel(evaluate.REPORT_PATH)}")
     return 0
@@ -128,7 +128,7 @@ def cmd_evaluate_master(args) -> int:
     ensure_xgboost_importable()
     from pathlib import Path
     from pipeline.config import EXPERIMENTS_DIR
-    from pipeline.training import evaluate
+    from pipeline.evaluation import master_report as evaluate
     runs = sorted((EXPERIMENTS_DIR / "master_runs").glob("2*"))
     run_dir = Path(args.run) if args.run else runs[-1]
     evaluate.evaluate_run(run_dir)
@@ -136,17 +136,27 @@ def cmd_evaluate_master(args) -> int:
     return 0
 
 
+def cmd_verify_master(args) -> int:
+    from pipeline.env import ensure_xgboost_importable
+    ensure_xgboost_importable()
+    from pipeline.evaluation.verify import verify_master
+    from pipeline.inference import active_model_dir
+    out = verify_master(args.model_dir or active_model_dir())
+    print(json.dumps(out, indent=2))
+    return 0 if out["status"] == "passed" else 1
+
+
 def cmd_export_predictions(args) -> int:
     from pipeline.env import ensure_xgboost_importable
     ensure_xgboost_importable()
-    from pipeline import exports
+    from pipeline.analytics import season_exports as exports
     path = exports.export_season_predictions(model_dir=args.model_dir)
     print(f"predictions: {rel(path)}")
     return 0
 
 
 def cmd_update_analytics(args) -> int:
-    from pipeline import exports
+    from pipeline.analytics import season_exports as exports
     paths = exports.build_season_analytics()
     for p in paths:
         print(rel(p))
@@ -192,6 +202,9 @@ def main(argv=None) -> int:
     ev = sub.add_parser("evaluate-master", help="held-out evaluation + docs/reports/MASTER_MODEL_REPORT.md for a run")
     ev.add_argument("--run", default=None, help="run directory (default: latest)")
     ev.set_defaults(fn=cmd_evaluate_master)
+    vm = sub.add_parser("verify-master", help="reproduce a saved Master model's held-out predictions and metrics")
+    vm.add_argument("--model-dir", default=None, help="default: the active model")
+    vm.set_defaults(fn=cmd_verify_master)
     ex = sub.add_parser("export-predictions", help="score every season shot with the latest Master model (no look-ahead)")
     ex.add_argument("--model-dir", default=None)
     ex.set_defaults(fn=cmd_export_predictions)

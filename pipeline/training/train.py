@@ -1,4 +1,4 @@
-"""Master xFG training protocol (see configs/training.yaml and docs/MODEL_METHODOLOGY.md).
+"""Master xFG training protocol (see configs/training.yaml and docs/methodology/MODEL_METHODOLOGY.md).
 
 1. Chronological split on whole game dates: model-fit | calibration | test (newest, untouched).
 2. For each candidate family (full feature set): Optuna search scored by rolling-origin CV log loss

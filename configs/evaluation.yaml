@@ -1,4 +1,4 @@
-# Evaluation settings for pipeline/evaluation and pipeline/training/evaluate.py
+# Evaluation settings for pipeline/evaluation and pipeline/evaluation/master_report.py
 primary_metric: log_loss
 bootstrap:
   n_boot: 2000

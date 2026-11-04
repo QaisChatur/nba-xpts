@@ -44,5 +44,5 @@ def have_model_a():
 
 @pytest.fixture(scope="session")
 def oct28_context(have_blueprint, have_pages):
-    from pipeline.run import ingest, match
+    from pipeline.legacy.nightly import ingest, match
     return match(ingest(TARGET_DATE, only_games=BLUEPRINT_GAMES))

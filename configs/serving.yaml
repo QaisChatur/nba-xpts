@@ -1,0 +1,4 @@
+# Which saved Master artifact (models/master/<version>/) inference, exports and analytics use by default.
+# Promotion is a deliberate edit here after a version wins under the evaluation protocol; training a new
+# version never changes it.
+active_master_model: master_master_v1_20261104T210006

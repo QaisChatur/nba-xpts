@@ -5,8 +5,8 @@ features artifact, evaluates on the held-out test season, and saves the fitted
 pipeline with joblib plus a metrics JSON.
 
 Usage:
-    python scripts/train_model.py
-    python scripts/train_model.py --features data/processed/xpts_features.pkl --model-out models/xpts_player_specific_model.pkl
+    python scripts/model_a/train_model.py
+    python scripts/model_a/train_model.py --features data/processed/legacy/model_a/xpts_features.pkl --model-out models/experiments/model_a_retrain/model_a_custom.pkl
 """
 
 from __future__ import annotations

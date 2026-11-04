@@ -6,8 +6,8 @@ builds smoothed player priors from TRAIN seasons only, and writes a features art
 consumed by train_model.py and predict.py.
 
 Usage:
-    python scripts/build_features.py
-    python scripts/build_features.py --shots data/raw/shotchart_shots.csv --out data/processed/xpts_features.pkl
+    python scripts/model_a/build_features.py
+    python scripts/model_a/build_features.py --shots data/raw/historical/shotchart_shots.csv --out data/processed/legacy/model_a/xpts_features.pkl
 """
 
 from __future__ import annotations

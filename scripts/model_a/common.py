@@ -8,7 +8,7 @@ from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 RAW_DATA_PATH = PROJECT_ROOT / "data" / "raw" / "historical"
-PROCESSED_DATA_PATH = PROJECT_ROOT / "data" / "processed" / "legacy"
+PROCESSED_DATA_PATH = PROJECT_ROOT / "data" / "processed" / "legacy" / "model_a"
 MODELS_DIR = PROJECT_ROOT / "models"
 
 RAW_SHOTS_PATH = RAW_DATA_PATH / "shotchart_shots.csv"
@@ -21,7 +21,7 @@ MODEL_PATH = MODELS_DIR / "legacy" / "model_a" / "xpts_player_specific_model.pkl
 METRICS_PATH = MODELS_DIR / "legacy" / "model_a" / "xpts_player_specific_metrics.json"
 RETRAIN_DIR = MODELS_DIR / "experiments" / "model_a_retrain"
 PROTECTED_PATHS = {MODEL_PATH.resolve(), METRICS_PATH.resolve(), PREDS_PATH.resolve(),
-                   (MODELS_DIR / "legacy" / "model_a" / "xpts_player_specific_model.prepare_backend_assets.bak.pkl").resolve()}
+                   (MODELS_DIR / "legacy" / "backend_prep_retrain" / "xpts_player_specific_model.pkl").resolve()}
 
 
 def default_retrain_paths() -> tuple[Path, Path]:

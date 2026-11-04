@@ -25,7 +25,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from pipeline.config import BLUEPRINT_DIR, GAME_PAGES_DIR, REPORTS_DIR, SEASON, SEASON_MANIFEST
+from pipeline.config import BLUEPRINT_DIR, GAMES_LISTING_DIR, GAME_PAGES_DIR, REPORTS_DIR, SEASON, SEASON_MANIFEST
 from pipeline.ingestion import blueprint, nba_pages
 from pipeline.ingestion.blueprint_scrape import AccessRefused, fetch_blueprint_game, fetch_games_listing, paths
 from pipeline.matching import match_shots
@@ -161,7 +161,7 @@ def ingest_season(start: str = SEASON_SEARCH_START, end: str | None = None, allo
     candidates: dict[str, dict] = {}
     try:
         for day in daterange(start, end):
-            cached = (BLUEPRINT_DIR / "schedule_days" / f"{day}.json").exists()
+            cached = (GAMES_LISTING_DIR / f"{day}.json").exists()
             refresh = allow_network and day >= recent_cutoff and manifest["days"].get(day, {}).get("fetched_on") != end
             try:
                 games = fetch_games_listing(day, allow_network=allow_network, refresh=refresh)

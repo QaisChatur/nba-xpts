@@ -3,8 +3,8 @@
 xPTS = P(make) * shot_value, where shot_value is 2 or 3.
 
 Usage:
-    python scripts/predict.py
-    python scripts/predict.py --split test --out data/processed/xpts_player_specific_predictions.csv
+    python scripts/model_a/predict.py
+    python scripts/model_a/predict.py --split test --out /tmp/model_a_predictions.csv
 """
 
 from __future__ import annotations

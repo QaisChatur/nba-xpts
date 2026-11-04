@@ -1,6 +1,6 @@
 """Master Shot Dataset: one row per official 2026-27 field-goal attempt of every verified game.
 
-Columns (see docs/DATA_MATCHING.md and docs/MODEL_METHODOLOGY.md):
+Columns (see docs/methodology/DATA_MATCHING.md and docs/methodology/MODEL_METHODOLOGY.md):
   identifiers   shot_uid, GAME_ID, GAME_EVENT_ID, game_date, PLAYER_ID, PLAYER_NAME, TEAM_ID, team, defender_id ...
   label         made (official SHOT_MADE_FLAG; Blueprint `success` must agree on matched rows)
   features      groups in configs/features.yaml (shot_context, game_context, tracking, player, ...)
