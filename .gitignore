@@ -45,6 +45,8 @@ data/processed/
 # small, curated fixtures used by tests and CI are committed
 !data/samples/
 !data/samples/**
+# small derived summary tables cited by the reports
+!docs/reports/player_skill/*.csv
 
 # ---- model binaries: kept outside Git; metadata, metrics and schemas are committed
 *.pkl

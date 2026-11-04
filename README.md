@@ -38,6 +38,7 @@ python -m pipeline export-predictions                     # season predictions (
 python -m pipeline update-analytics                       # Game Center, standings, explorer, highlights
 python -m pipeline verify-master                          # re-score the active Master model's test set; must match exactly
 python -m pipeline verify-model-a                         # Model A loads safely and reproduces 2024-25 results
+python -m pipeline player-skill all                       # Master V2 research: hierarchical player skill + comparison vs V1
 python -m pipeline run --date 2026-10-28                  # legacy single-night Model A vs NBA xFG pipeline
 ```
 
@@ -57,6 +58,7 @@ preds = predict_shots(shots_df)          # validates inputs; returns master_xfg,
 | `pipeline/features/` | shot context, play-by-play context, historical baseline, player/defender priors, dataset assembly |
 | `pipeline/training/` | chronological splits, model families, Optuna tuning, calibration |
 | `pipeline/evaluation/` | metrics, bootstrap, Master evaluation report, artifact verification |
+| `pipeline/player_skill/` | Master V2 research: OOF historical residuals, hierarchical EB / penalized hierarchical logistic player skill, contest audit, archetypes, V2 comparison |
 | `pipeline/inference.py`, `pipeline/analytics/season_exports.py` | `predict_shots`, season predictions, analytics exports |
 | `pipeline/analytics/` | Game Center timelines, expected standings, shot explorer, rankings |
 | `pipeline/legacy/`, `scripts/model_a/`, `scripts/legacy/` | Model A loader, single-night pipeline, original Model A training scripts, legacy backend/DB tools |
@@ -71,6 +73,9 @@ preds = predict_shots(shots_df)          # validates inputs; returns master_xfg,
 
 * [`docs/methodology/MODEL_METHODOLOGY.md`](docs/methodology/MODEL_METHODOLOGY.md): features, leakage controls, training
   and evaluation protocol.
+* [`docs/reports/PLAYER_SKILL_MODELING.md`](docs/reports/PLAYER_SKILL_MODELING.md) and
+  [`docs/reports/MASTER_V2_COMPARISON.md`](docs/reports/MASTER_V2_COMPARISON.md): player-aware skill
+  research and the V2-vs-V1 comparison. V1 remains active.
 * [`docs/methodology/DATA_MATCHING.md`](docs/methodology/DATA_MATCHING.md): sources, season ingestion, matching, coverage
   and missing-shot analysis.
 * [`docs/architecture/DATA_FILES.md`](docs/architecture/DATA_FILES.md): data layout, storage policy, restore steps.

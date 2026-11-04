@@ -29,6 +29,37 @@ is statistically indistinguishable from NBA's own xFG** and far better than the 
 * **Status: exploratory.** Detecting a 0.005 log-loss difference against NBA xFG at 80% power needs
   about 15,600 test shots (design effect 1.42); the test set has 4,091.
 
+## Master V2 research track: player-aware skill (2026-11-04)
+
+Reports: [`docs/reports/PLAYER_SKILL_MODELING.md`](docs/reports/PLAYER_SKILL_MODELING.md) and
+[`docs/reports/MASTER_V2_COMPARISON.md`](docs/reports/MASTER_V2_COMPARISON.md).
+
+**Decision: Master V1 remains the active model** (`configs/serving.yaml`).
+
+* **Player shooting skill is real.** The between-player SD of FG% over expected is 0.031, and the
+  season-to-season correlation is 0.65.
+* **Historical validation gain.** A hierarchical empirical-Bayes skill estimate improves
+  out-of-sample log loss on 2024-25 by **0.0023** over a player-agnostic difficulty model. It uses
+  out-of-fold difficulty residuals, tuned shrinkage per level, n_eff and reliability, newcomer
+  priors and as-of-date updating.
+* **2026-27 gain on top of V1.** It is −0.0009 log loss [−0.0026, +0.0008] when skill is added as
+  one logit offset (`adj_eb`), and −0.0005 [−0.0029, +0.0019] for the fixed prior chosen on the
+  calibration partition. Both are consistent with calibration but not statistically resolvable. The
+  Oct 31–Nov 2 test set was used a second time, once; no newer games were available.
+* **Why V1's player features failed.** The main cause was integration: 20 correlated raw features
+  handed to CatBoost on 9k shots. Other causes:
+  - raw FG confounded with difficulty;
+  - Dash defender ranges mapped to Blueprint contest distance on mismatched scales;
+  - in-sample residuals;
+  - untuned shrinkage;
+  - zero-filled newcomers.
+* **Contest and physical signals.** Contest-specific ability, physical proxies and archetypes add
+  no detectable signal. No licensed height data was reachable (NBA.com players index: HTTP 403).
+* **Biggest data gap.** There is no shot-level 2025-26 data, so second-year players are treated as
+  newcomers.
+* **Next step.** Re-run `python -m pipeline player-skill build` and `compare` on games after Nov 4.
+  Promote `adj_eb` (V1 + fixed skill offset, no tree retraining) only if its CI excludes zero.
+
 ## Mission phases
 
 | Phase | Status | Evidence |
@@ -42,7 +73,8 @@ is statistically indistinguishable from NBA's own xFG** and far better than the 
 | 7 Final model + inference | done | `models/master/master_master_v1_20261104T210006/`, `pipeline.inference.predict_shots` |
 | 8 Report | done | `docs/reports/MASTER_MODEL_REPORT.md` |
 | 9 Product analytics | done (files only) | `data/processed/analytics/season/<version>/`, `docs/architecture/PRODUCT_ROADMAP.md` |
-| 10 Handoff | done | 105 tests pass; clean-environment install passes; docs below |
+| 10 Handoff | done | tests pass; clean-environment install passes; docs below |
+| V2 Player-aware skill | research done; V1 kept active | `pipeline/player_skill/`, `configs/player_skill.yaml`, `data/processed/master/master_v2/`, `docs/reports/player_skill/comparison_20261104T221133.json` |
 
 ## Data
 
@@ -65,8 +97,8 @@ is statistically indistinguishable from NBA's own xFG** and far better than the 
 
 ## Repository and GitHub
 
-* **Secrets scan:** no secrets, tokens or credentials in the working tree or in Git history (2
-  commits). `.env.example` contains placeholders only.
+* **Secrets scan:** no secrets, tokens or credentials in the working tree or in Git history (re-run
+  before every push). `.env.example` contains placeholders only.
   - Local absolute paths in the legacy notebook's saved outputs were replaced by `<project_root>`
     (they remain in earlier commits; no credentials were ever present).
 * **What gets committed:** code, configs, docs, report figures and a one-game sample, about 2.5 MB in
@@ -79,8 +111,12 @@ is statistically indistinguishable from NBA's own xFG** and far better than the 
 ## Limitations
 
 * Early, partial season. The test window is the 3 newest dates; drift later in the season is untested.
-* Player-prior value should be re-tested as in-season data accumulates. Re-run `train-master` monthly
-  and compare versions under the same protocol.
+* Player-skill value should be re-tested as in-season data accumulates. Re-run `player-skill build`
+  and `compare` on new games, and `train-master` monthly, under the same protocol.
+* No shot-level 2025-26 history (`stats.nba.com` unreachable from here) and 2022-23 ShotChartDetail
+  stops at Jan 6. No licensed roster heights are available.
+* The game listing for 2026-11-03 had been cached before that day's games. `ingest-season` now
+  re-fetches any listing fetched on or before its game day. NBA.com lists no games for Nov 3.
 * The fallback no-tracking model, used only for untracked shots in exports, is weaker (test log loss
   about 0.64).
 * Tracking quirks: release time is 0 (not measured) on rim attempts and capped at 1.0 s.
@@ -97,6 +133,7 @@ python -m pipeline coverage-report --reverify
 python -m pipeline build-dataset
 python -m pipeline train-master                       # ~10 min tuning + ~10 min evaluation on a laptop
 python -m pipeline export-predictions && python -m pipeline update-analytics
+python -m pipeline player-skill all                   # V2 research track: history, tune, build, compare, report (~6 min)
 python -m pytest
 ```
 

@@ -51,6 +51,17 @@ For player p and category c: `fg_post = (makes_w + k·league_c) / (attempts_w + 
 `smoe_post = Σ_w(made − baseline) / (attempts_w + k_smoe)`. k values are in `configs/features.yaml`;
 new players fall back smoothly to league rates and to SMOE = 0.
 
+Master V2 research track: `pipeline/player_skill/` replaces these flat priors with a hierarchical,
+difficulty-adjusted estimator, documented in `docs/reports/PLAYER_SKILL_MODELING.md`. It uses:
+
+- out-of-fold difficulty residuals;
+- shrinkage per level tuned on 2024-25;
+- n_eff and reliability;
+- veteran and newcomer root priors;
+- as-of-date updating.
+
+It is applied as a single logit offset on top of V1. V1 is unchanged and remains active.
+
 ### Suspicious tracking values
 
 * `release_time_s == 0` occurs on 99% of attempts within 6 ft. It means "not measured" (rim attempts)

@@ -163,6 +163,45 @@ def cmd_update_analytics(args) -> int:
     return 0
 
 
+def cmd_player_skill(args) -> int:
+    """Master V2 player-skill track: history -> tune -> build -> compare -> report."""
+    import shutil
+    from pathlib import Path
+
+    import joblib
+    import pandas as pd
+
+    from pipeline.config import EXPERIMENTS_DIR, MASTER_DATASET_DIR
+    from pipeline.player_skill import experiments, features, history, report, tuning
+    from pipeline.utils import write_json
+    steps = ["history", "tune", "build", "compare", "report"] if args.step == "all" else [args.step]
+    tuning_path = report.OUT_DIR / "tuning.json"
+    if "history" in steps:
+        base = joblib.load(MASTER_DATASET_DIR / "master_v1" / "history_assets" / "baseline_hgb.joblib")
+        print(rel(history.build_history(insample_model=base)))
+    if "tune" in steps:
+        h = history.load_history()
+        res = tuning.tune_all(h, pd.read_csv(DASH_CLOSEST_PATH))
+        res["glmm"] = tuning.tune_glmm(h, res["params"]["half_life_days"])
+        report.OUT_DIR.mkdir(parents=True, exist_ok=True)
+        write_json(tuning_path, res)
+        print(f"tuned parameters: {json.dumps(res['params'])}\n(copy into configs/player_skill.yaml to adopt)")
+    if "build" in steps:
+        print(rel(features.build_master_v2()))
+    run_dir = None
+    if "compare" in steps:
+        s = experiments.run()
+        run_dir = EXPERIMENTS_DIR / "master_v2_runs" / s["run_id"]
+        report.OUT_DIR.mkdir(parents=True, exist_ok=True)
+        shutil.copy(run_dir / "comparison.json", report.OUT_DIR / f"comparison_{s['run_id']}.json")
+        print(f"selected on calibration: {s['selected_on_calibration']}  ->  {rel(run_dir)}")
+    if "report" in steps:
+        run_dir = Path(args.run) if args.run else run_dir or max((EXPERIMENTS_DIR / "master_v2_runs").glob("2*"))
+        report.build(run_dir, tuning_path)
+        print(rel(report.OUT_DIR))
+    return 0
+
+
 def main(argv=None) -> int:
     p = argparse.ArgumentParser(prog="python -m pipeline", description="xPoints data and modelling pipeline")
     sub = p.add_subparsers(dest="cmd", required=True)
@@ -210,6 +249,10 @@ def main(argv=None) -> int:
     ex.set_defaults(fn=cmd_export_predictions)
     ua = sub.add_parser("update-analytics", help="rebuild season analytics tables from exported predictions")
     ua.set_defaults(fn=cmd_update_analytics)
+    ps = sub.add_parser("player-skill", help="Master V2 player-skill research track (history/tune/build/compare/report)")
+    ps.add_argument("step", choices=["all", "history", "tune", "build", "compare", "report"])
+    ps.add_argument("--run", default=None, help="comparison run directory for `report` (default: latest)")
+    ps.set_defaults(fn=cmd_player_skill)
     args = p.parse_args(argv)
     return args.fn(args)
 

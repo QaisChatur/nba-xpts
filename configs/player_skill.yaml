@@ -1,0 +1,28 @@
+# Player-aware skill (Master V2 research track). Read by pipeline/player_skill/.
+# Values below were chosen by chronological validation on 2024-25 (pipeline.player_skill.tuning,
+# `python -m pipeline tune-player-skill`); nothing here was tuned on 2026-27 data.
+dataset_version: master_v2
+base_dataset_version: master_v1
+preseason_cutoff: "2026-10-01"     # evidence before this date defines "has history" (veteran root prior)
+
+hierarchy:
+  half_life_days: 1460.0
+  # k = sigma^2 / tau^2 pseudo-attempts per level (context-adjusted skill, made - xb_oof)
+  k: {all: 450.0, type: 4000.0, zone: 2500.0, action: 300.0, zone_action: 8000.0}
+  # raw FG hierarchy (Master V1 style constants, not tuned: used only for the "raw priors" candidate)
+  k_raw: {all: 150.0, type: 200.0, zone: 150.0, action: 200.0, zone_action: 300.0}
+  mu_veteran: 0.0029               # 2024-25 mean over-expected of players with earlier history
+  mu_newcomer: -0.0398             # ... of players without earlier history
+  w_dash: 0.0                      # last-season Dash aggregates hurt in the production-analog test
+
+contest:
+  dash_seasons: ["2021-22", "2022-23", "2023-24", "2024-25", "2025-26"]
+  half_life_days: 730.0
+  k_dev: 200.0
+  k_sens: 150.0
+  threshold_partition_end: "2026-10-27"   # quantile mapping uses contest distances of model-fit games only
+
+glmm:
+  half_life_days: 1460.0
+  lambda: {player: 50.0, type: 100.0, zone: 150.0, action: 150.0, zone_action: 400.0, contest: 300.0}
+  joint_dash_weight: 0.5           # weight of Dash (player, type, range) binomial rows in the joint model

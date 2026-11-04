@@ -41,6 +41,10 @@ moved with the `XPTS_DATA_DIR` environment variable). `python -m pipeline audit`
 | `models/legacy/model_b/exploratory_2026-10-28/` | exploratory tracking model from the Oct 28 study | `python -m pipeline run --date 2026-10-28` |
 | `models/master/<model_version>/` | Master artifact (see `docs/methodology/MODEL_METHODOLOGY.md`) | `python -m pipeline train-master` |
 | `models/experiments/master_runs/<run_id>/` | Optuna trials, predictions, training summary, evaluation JSON; `experiments.jsonl` run log | `train-master` |
+| `data/processed/player_skill/history_shots.parquet` | 2022-25 shots with leave-one-season-out difficulty expectations (`xb`) and the in-sample V1 expectation | `python -m pipeline player-skill history` |
+| `data/processed/master/master_v2/` | Master V1 columns unchanged + as-of-date `ps_*` player-skill columns | `python -m pipeline player-skill build` |
+| `models/experiments/master_v2_runs/<run_id>/` | `comparison.json`, `predictions.parquet` (git-ignored like all runs; the reported run's summary is copied to `docs/reports/player_skill/comparison_<run_id>.json`) | `python -m pipeline player-skill compare` |
+| `docs/reports/player_skill/` | audit tables, tuning record, player diagnostics (committed) | `python -m pipeline player-skill tune` / `report` |
 
 ## Restoring a clean checkout
 

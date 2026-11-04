@@ -150,6 +150,7 @@ def ingest_season(start: str = SEASON_SEARCH_START, end: str | None = None, allo
     manifest = load_manifest(manifest_path)
     manifest["search_range"] = [start, end]
     recent_cutoff = (dt.date.fromisoformat(end) - dt.timedelta(days=refresh_recent_days - 1)).isoformat()
+    today = dt.date.today().isoformat()
     requests_made = 0
 
     def pause():
@@ -162,13 +163,15 @@ def ingest_season(start: str = SEASON_SEARCH_START, end: str | None = None, allo
     try:
         for day in daterange(start, end):
             cached = (GAMES_LISTING_DIR / f"{day}.json").exists()
-            refresh = allow_network and day >= recent_cutoff and manifest["days"].get(day, {}).get("fetched_on") != end
+            fetched_on = manifest["days"].get(day, {}).get("fetched_on")
+            # a listing fetched on or before its own game day may predate the games being played
+            refresh = allow_network and day >= recent_cutoff and (fetched_on is None or fetched_on <= day)
             try:
                 games = fetch_games_listing(day, allow_network=allow_network, refresh=refresh)
                 if refresh or not cached:
                     pause()
-                manifest["days"][day] = {"listing_links": len(games), "fetched_on": end if (refresh or not cached)
-                                         else manifest["days"].get(day, {}).get("fetched_on")}
+                manifest["days"][day] = {"listing_links": len(games), "fetched_on": today if (refresh or not cached)
+                                         else fetched_on}
             except FileNotFoundError:
                 manifest["days"][day] = {"listing_links": None, "note": "not cached (network not allowed)"}
                 continue
