@@ -1,0 +1,16 @@
+{
+  "model_type": "XGBClassifier",
+  "random_seed": 42,
+  "rows_scored": 540627,
+  "seasons_scored": [
+    "2022-23",
+    "2023-24",
+    "2024-25"
+  ],
+  "feature_count": 45,
+  "prediction_path": "data/processed/legacy/xpts_player_specific_predictions_all_games.csv",
+  "game_flow_path": "data/processed/legacy/game_flow_all_games.csv",
+  "zone_summary_path": "data/processed/legacy/player_zone_shottype_summary.csv",
+  "action_summary_path": "data/processed/legacy/player_action_summary.csv",
+  "clip_index_path": "data/processed/legacy/clip_index_all_games.csv"
+}

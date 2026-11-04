@@ -1,0 +1,115 @@
+# Master xFG feature definitions. Read by pipeline/features/dataset.py and pipeline/training/*.
+dataset_version: master_v1
+
+history:
+  # recency weights for 2022-23 .. 2024-25 ShotChartDetail shots used in pre-season priors
+  season_weights: {"2024-25": 1.0, "2023-24": 0.75, "2022-23": 0.5}
+  last_season_dash: "2025-26"
+
+priors:
+  k_fg_all: 150        # pseudo-attempts toward the league rate of the category
+  k_fg_type: 200
+  k_fg_zone: 150
+  k_fg_family: 200
+  k_fg_range: 150
+  k_smoe: 250          # shot-making over expected shrinks toward 0
+  k_rate: 100          # shot-diet shares
+  k_def: 150           # defender smoe allowed (in-season only)
+  w_dash_last: 1.0     # weight of 2025-26 PlayerDashPtShots 2PT/3PT counts
+  in_season_weight: 1.0
+
+# Feature groups used in ablations. Every feature must be known before the shot.
+groups:
+  shot_context:
+    - is_three
+    - shot_distance_ft
+    - loc_x
+    - loc_y
+    - abs_loc_x
+    - shot_angle_deg
+    - is_corner3
+    - is_backcourt
+    - zone_code
+    - family_code
+    - act_driving
+    - act_running
+    - act_cutting
+    - act_pullup
+    - act_stepback
+    - act_fadeaway
+    - act_turnaround
+    - act_floater
+    - act_hook
+    - act_layup
+    - act_dunk
+    - act_tip_putback
+    - act_alley_oop
+    - act_reverse
+    - act_finger_roll
+  game_context:
+    - period
+    - period_seconds_remaining
+    - game_seconds_elapsed
+    - is_overtime
+    - end_of_period_heave_window
+    - is_home
+    - score_margin_pre
+    - poss_code
+    - seconds_since_poss_start
+    - second_chance
+    - after_timeout
+    - shooter_fga_before_game
+  tracking:
+    - shot_clock_s
+    - shot_clock_missing
+    - contest_distance_in
+    - contest_height_in
+    - shot_vertical_in
+    - shooter_speed_mph
+    - release_time_s
+    - release_time_zero
+    - release_time_capped
+    - bp_shot_distance_ft
+    - contest_ratio
+  player:
+    - pl_fg_all_post
+    - pl_fg_type_post
+    - pl_fg_zone_post
+    - pl_fg_family_post
+    - pl_smoe_all_post
+    - pl_smoe_type_post
+    - pl_smoe_zone_post
+    - pl_smoe_family_post
+    - pl_log_att_all
+    - pl_log_att_zone
+    - pl_log_att_family
+    - pl_three_rate
+    - pl_rim_rate
+    - pl_smoe_season_sd
+    - pl_has_history
+    - pl_season_att
+  player_tracking:
+    - pl_fg_def_range_post
+    - pl_fg_def_range_vs_league
+  defender:
+    - def_smoe_allowed_post
+    - def_contests_season
+
+# Never allowed as model inputs (checked by tests/test_leakage.py and at training time).
+forbidden:
+  - made
+  - SHOT_MADE_FLAG
+  - EVENT_TYPE
+  - nba_xfg
+  - nba_xpts_fg
+  - bp_xpts_fg_only
+  - home_score_after
+  - away_score_after
+  - pbp_scoreHome
+  - pbp_scoreAway
+  - pbp_description
+  - pbp_shotResult
+  - featured
+  - model_a_xfg
+  - actual_fg_points
+  - shooter_fgm_before_game   # prior in-game makes: available pre-shot but excluded (hot-hand noise, kept for analysis)

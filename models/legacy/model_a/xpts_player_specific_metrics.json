@@ -1,0 +1,28 @@
+{
+  "model": "XGBClassifier",
+  "params": {
+    "n_estimators": 300,
+    "learning_rate": 0.05,
+    "max_depth": 6,
+    "subsample": 0.9,
+    "colsample_bytree": 0.9,
+    "objective": "binary:logistic",
+    "eval_metric": "logloss",
+    "random_state": 42
+  },
+  "split_method": "season-based (test=2024-25)",
+  "train_seasons": [
+    "2022-23",
+    "2023-24"
+  ],
+  "test_season": "2024-25",
+  "n_train": 321100,
+  "n_test": 219527,
+  "test_metrics": {
+    "accuracy": 0.6048230969311292,
+    "roc_auc": 0.6336832945732884,
+    "log_loss": 0.6786485910415649,
+    "brier_score": 0.23696711659431458,
+    "train_log_loss": 0.580674946308136
+  }
+}

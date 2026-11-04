@@ -1,0 +1,46 @@
+{
+  "built_utc": "2026-11-04T20:42:08+00:00",
+  "n_hist_shots": 540627,
+  "season_weights": {
+    "2024-25": 1.0,
+    "2023-24": 0.75,
+    "2022-23": 0.5
+  },
+  "league_three_rate": 0.4074673607021934,
+  "league_rim_rate": 0.28779223557338435,
+  "baseline_hist_logloss_in_sample": 0.6349438872674554,
+  "inputs": {
+    "shotchart": "c6caaa20646d62ded014a8c75e9857b7eb2df86968031a4626d4376c5b52c5c0",
+    "dash_closest": "8119d7fb0386223d2f0de0234a5485fac92ccd850322e6b62920b2f71fe159aa"
+  },
+  "baseline_features": [
+    "is_three",
+    "shot_distance_ft",
+    "loc_x",
+    "loc_y",
+    "abs_loc_x",
+    "shot_angle_deg",
+    "is_corner3",
+    "is_backcourt",
+    "period",
+    "period_seconds_remaining",
+    "end_of_period_heave_window",
+    "zone_code",
+    "family_code",
+    "act_driving",
+    "act_running",
+    "act_cutting",
+    "act_pullup",
+    "act_stepback",
+    "act_fadeaway",
+    "act_turnaround",
+    "act_floater",
+    "act_hook",
+    "act_layup",
+    "act_dunk",
+    "act_tip_putback",
+    "act_alley_oop",
+    "act_reverse",
+    "act_finger_roll"
+  ]
+}

@@ -1,0 +1,38 @@
+# Master xFG training protocol. Read by pipeline/training/.
+seed: 42
+
+split:
+  # Chronological, game-grouped, whole game dates. The newest dates form the untouched test set;
+  # the dates before it form the calibration partition (calibrator fitting + architecture choice);
+  # everything earlier is the model-fit partition (hyperparameter search with rolling-origin CV).
+  test_fraction_games: 0.20
+  calibration_fraction_games: 0.15
+  rolling_folds: 4              # expanding-window folds inside the model-fit partition
+  min_train_games_first_fold: 20
+
+# Only shots matched one-to-one to a Blueprint tracking record are used for training/evaluation.
+row_filter: in_blueprint
+
+candidates: [logistic, xgboost, lightgbm, catboost]
+
+optuna:
+  n_trials: {logistic: 25, xgboost: 40, lightgbm: 40, catboost: 25}
+  timeout_s_per_model: 900
+
+early_stopping_rounds: 50
+max_boosting_rounds: 2000
+
+calibration_methods: [none, platt, isotonic]
+
+# Feature sets compared in ablations (union of groups in configs/features.yaml).
+feature_sets:
+  shot_context_only: [shot_context]
+  context: [shot_context, game_context]
+  tracking_only: [tracking]
+  player_only: [player]
+  tracking_without_player: [shot_context, game_context, tracking]
+  context_player: [shot_context, game_context, player]
+  full_no_defender: [shot_context, game_context, tracking, player, player_tracking]
+  full: [shot_context, game_context, tracking, player, player_tracking, defender]
+# The final model's feature set is chosen on the calibration partition (never on test).
+final_feature_set_candidates: [tracking_without_player, full_no_defender, full]

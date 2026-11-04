@@ -1,0 +1,85 @@
+{
+  "built_utc": "2026-11-04T20:16:49+00:00",
+  "train_seasons": [
+    "2022-23",
+    "2023-24"
+  ],
+  "split_method": "season-based (test=2024-25)",
+  "n_train_shots": 321100,
+  "global_fg": 0.473260666459047,
+  "league_defaults": {
+    "player_overall_fg_smoothed": 0.473260666459047,
+    "player_2pt_fg_smoothed": 0.5448019662272757,
+    "player_3pt_fg_smoothed": 0.362787122946858,
+    "player_rim_fg_smoothed": 0.6635120705177865,
+    "player_midrange_fg_smoothed": 0.4169980253726095,
+    "player_corner_3_fg_smoothed": 0.38745164410058025,
+    "player_above_break_3_fg_smoothed": 0.3540232600594925,
+    "player_deep_3_fg_smoothed": 0.3007824408088609,
+    "player_avg_shot_distance": 13.528947368421052,
+    "player_3pa_rate": 0.39305200872002494,
+    "player_rim_frequency": 0.2974836499532856,
+    "player_midrange_frequency": 0.1151323575210215,
+    "player_corner_3_frequency": 0.10304578013080037,
+    "player_pullup_frequency": 0.13287760822173778,
+    "player_catch_shoot_frequency": 0.6163874182497664
+  },
+  "k_map": {
+    "overall": 100,
+    "2pt3pt": 150,
+    "zone": 100,
+    "action": 150,
+    "zone_action": 250,
+    "defender": 300,
+    "rare": 400
+  },
+  "inputs": {
+    "data/raw/shotchart_shots.csv": "c6caaa20646d62ded014a8c75e9857b7eb2df86968031a4626d4376c5b52c5c0",
+    "data/raw/playerdashptshots_closest_defender.csv": "8119d7fb0386223d2f0de0234a5485fac92ccd850322e6b62920b2f71fe159aa",
+    "data/raw/playerdashptshots_closest_defender_10ft_plus.csv": "4541d1205b2602de3cd032ed2e2674f297d70d30b1e7c5c03e7ef6baea765658"
+  },
+  "defender_profile_seasons": [
+    "2021-22",
+    "2022-23",
+    "2023-24",
+    "2024-25",
+    "2025-26"
+  ],
+  "note": "Defender-profile priors aggregate every season in the PlayerDashPtShots files (as at training time). They include 2024-25, the historical test season, so historical test metrics carry mild leakage; no 2026-27 data is included, so 2026-27 evaluation is unaffected.",
+  "tables": {
+    "player_priors": {
+      "rows": 636,
+      "file": "player_priors.csv"
+    },
+    "zone_priors": {
+      "rows": 3756,
+      "file": "zone_priors.csv"
+    },
+    "action_priors": {
+      "rows": 15911,
+      "file": "action_priors.csv"
+    },
+    "zone_action_priors": {
+      "rows": 29191,
+      "file": "zone_action_priors.csv"
+    },
+    "distance_bin_priors": {
+      "rows": 3791,
+      "file": "distance_bin_priors.csv"
+    },
+    "defender_all": {
+      "rows": 1017,
+      "file": "defender_all.csv"
+    },
+    "defender_10ft": {
+      "rows": 996,
+      "file": "defender_10ft.csv"
+    }
+  },
+  "reproduction": {
+    "status": "passed",
+    "compared_rows": 219527,
+    "numeric_max_abs_diff": 0.0,
+    "categoricals_identical": true
+  }
+}

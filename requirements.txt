@@ -1,0 +1,23 @@
+# Core pipeline (python -m pipeline ...). Pinned to the versions the results were produced and tested
+# with (Python 3.14.7). Model A was trained with scikit-learn 1.4.2; cross-version loading is verified
+# by `python -m pipeline verify-model-a`.
+# macOS: XGBoost/LightGBM need the OpenMP runtime (`brew install libomp`); without it the CLI falls
+# back to scikit-learn's bundled copy.
+numpy==2.5.4
+pandas==3.0.6
+pyarrow==26.0.1
+scipy==1.18.1
+scikit-learn==1.9.1
+xgboost==3.4.1
+lightgbm==4.7.0
+catboost==1.2.10
+optuna==5.0.0
+shap==0.54.1
+joblib==1.6.0
+matplotlib==3.11.2
+pyyaml==6.0.3
+
+# Tests
+pytest==9.2.0
+
+# Database loading (scripts/legacy/load_db_stage_to_postgres.py only) lives in requirements-db.txt.

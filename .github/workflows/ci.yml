@@ -1,0 +1,29 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install
+        run: |
+          sudo apt-get update && sudo apt-get install -y libgomp1
+          pip install numpy pandas scipy scikit-learn xgboost lightgbm catboost joblib matplotlib pyyaml pytest
+      # The full data directory is not in Git; tests that need it skip themselves.
+      # CI runs the unit tests plus the committed one-game sample in data/samples.
+      - name: Test
+        env:
+          MPLBACKEND: Agg
+        run: python -m pytest -q -m "not slow"

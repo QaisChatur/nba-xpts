@@ -1,0 +1,24 @@
+{
+  "model_version": "master_master_v1_20261104T210006:fallback_no_tracking",
+  "dataset_version": "master_v1",
+  "feature_set": "context_player",
+  "feature_groups": [
+    "shot_context",
+    "game_context",
+    "player"
+  ],
+  "priors": {
+    "k_fg_all": 150,
+    "k_fg_type": 200,
+    "k_fg_zone": 150,
+    "k_fg_family": 200,
+    "k_fg_range": 150,
+    "k_smoe": 250,
+    "k_rate": 100,
+    "k_def": 150,
+    "w_dash_last": 1.0,
+    "in_season_weight": 1.0
+  },
+  "family": "catboost",
+  "purpose": "official FGA without Blueprint tracking only"
+}

@@ -1,0 +1,4 @@
+# Optional: only needed for scripts/load_db_stage_to_postgres.py (not used by the pipeline package).
+-r requirements.txt
+sqlalchemy
+psycopg[binary]

@@ -1,0 +1,1223 @@
+{
+  "run_id": "20261104T210006",
+  "created_utc": "2026-11-04T21:09:06+00:00",
+  "quick": false,
+  "dataset_version": "master_v1",
+  "dataset_meta": {
+    "rows": 18852,
+    "rows_with_tracking": 17389,
+    "games": 107,
+    "games_with_tracking": 107,
+    "date_range": [
+      "2026-10-20",
+      "2026-11-02"
+    ]
+  },
+  "split": {
+    "model_fit": {
+      "dates": [
+        "2026-10-20",
+        "2026-10-27"
+      ],
+      "games": 56,
+      "shots": 9279
+    },
+    "calibration": {
+      "dates": [
+        "2026-10-28",
+        "2026-10-30"
+      ],
+      "games": 25,
+      "shots": 4019
+    },
+    "test": {
+      "dates": [
+        "2026-10-31",
+        "2026-11-02"
+      ],
+      "games": 26,
+      "shots": 4091
+    },
+    "rolling_folds": [
+      {
+        "train": [
+          "2026-10-20",
+          "2026-10-22"
+        ],
+        "validate": [
+          "2026-10-23",
+          "2026-10-24"
+        ],
+        "train_shots": 2645,
+        "validate_shots": 3281
+      },
+      {
+        "train": [
+          "2026-10-20",
+          "2026-10-24"
+        ],
+        "validate": [
+          "2026-10-25",
+          "2026-10-25"
+        ],
+        "train_shots": 5926,
+        "validate_shots": 1166
+      },
+      {
+        "train": [
+          "2026-10-20",
+          "2026-10-25"
+        ],
+        "validate": [
+          "2026-10-26",
+          "2026-10-26"
+        ],
+        "train_shots": 7092,
+        "validate_shots": 1520
+      },
+      {
+        "train": [
+          "2026-10-20",
+          "2026-10-26"
+        ],
+        "validate": [
+          "2026-10-27",
+          "2026-10-27"
+        ],
+        "train_shots": 8612,
+        "validate_shots": 667
+      }
+    ]
+  },
+  "architectures": {
+    "logistic": {
+      "tuned": {
+        "family": "logistic",
+        "params": {
+          "C": 0.0015730182408986116,
+          "n_knots": 4
+        },
+        "cv_log_loss": 0.6204357043443134,
+        "n_estimators": null,
+        "fold_log_loss": [
+          0.6288842099134418,
+          0.6107358356411938,
+          0.6184546761476216,
+          0.60034824256695
+        ],
+        "n_trials": 25,
+        "seconds": 37.4
+      },
+      "calib": {
+        "method": "platt",
+        "crossfit_log_loss": {
+          "none": 0.6154933043408249,
+          "platt": 0.6154919246732706,
+          "isotonic": 0.6342965445511173
+        },
+        "best_crossfit_log_loss": 0.6154919246732706,
+        "raw": {
+          "n": 4019,
+          "observed_fg": 0.47151032595172926,
+          "mean_pred": 0.45464615008368237,
+          "mean_signed_error": -0.016864175868046897,
+          "mean_abs_error": 0.42653280730776516,
+          "log_loss": 0.6154933043408249,
+          "brier": 0.2147557371736208,
+          "roc_auc": 0.695904824371798,
+          "ece_quantile10": 0.028169226480908013,
+          "ece_uniform10": 0.026603072847482177,
+          "calibration_slope": 0.9908547887544169,
+          "calibration_intercept": 0.07678599711097228,
+          "mean_pred_on_makes": 0.5298120117721401,
+          "mean_pred_on_misses": 0.38758432903866
+        }
+      }
+    },
+    "xgboost": {
+      "tuned": {
+        "family": "xgboost",
+        "params": {
+          "max_depth": 2,
+          "learning_rate": 0.039184275891635506,
+          "min_child_weight": 3.3628645932194603,
+          "subsample": 0.9502971941844635,
+          "colsample_bytree": 0.7414372501990756,
+          "reg_lambda": 0.1685376696908582,
+          "reg_alpha": 0.04106387508746212,
+          "gamma": 2.1373564004894465
+        },
+        "cv_log_loss": 0.6082686721560266,
+        "n_estimators": 286,
+        "fold_log_loss": [
+          0.6163520984063496,
+          0.6004162057396827,
+          0.6075183185606751,
+          0.5839430226494035
+        ],
+        "n_trials": 40,
+        "seconds": 112.0
+      },
+      "calib": {
+        "method": "none",
+        "crossfit_log_loss": {
+          "none": 0.6121037595557541,
+          "platt": 0.6121458626884864,
+          "isotonic": 0.6176636875731153
+        },
+        "best_crossfit_log_loss": 0.6121037595557541,
+        "raw": {
+          "n": 4019,
+          "observed_fg": 0.47151032595172926,
+          "mean_pred": 0.46349715186284385,
+          "mean_signed_error": -0.008013174088885458,
+          "mean_abs_error": 0.426018780153444,
+          "log_loss": 0.6121037595557541,
+          "brier": 0.21365781485098884,
+          "roc_auc": 0.6966468156363509,
+          "ece_quantile10": 0.013888310312920779,
+          "ece_uniform10": 0.012814958740427106,
+          "calibration_slope": 1.001255418953056,
+          "calibration_intercept": 0.037802157398991044,
+          "mean_pred_on_makes": 0.5397428960158517,
+          "mean_pred_on_misses": 0.39547187635910097
+        }
+      }
+    },
+    "lightgbm": {
+      "tuned": {
+        "family": "lightgbm",
+        "params": {
+          "num_leaves": 15,
+          "max_depth": 2,
+          "learning_rate": 0.06021153603817525,
+          "min_child_samples": 52,
+          "subsample": 0.720599348871887,
+          "colsample_bytree": 0.6664982429187457,
+          "reg_lambda": 0.15318028090589628,
+          "reg_alpha": 0.23743343197300695,
+          "min_split_gain": 0.640059457333221
+        },
+        "cv_log_loss": 0.6100951629905731,
+        "n_estimators": 171,
+        "fold_log_loss": [
+          0.6192480907908835,
+          0.6014022981919841,
+          0.607094366390267,
+          0.5871061601042179
+        ],
+        "n_trials": 40,
+        "seconds": 53.3
+      },
+      "calib": {
+        "method": "none",
+        "crossfit_log_loss": {
+          "none": 0.6131966322087758,
+          "platt": 0.6133316276218987,
+          "isotonic": 0.6184863614971434
+        },
+        "best_crossfit_log_loss": 0.6131966322087758,
+        "raw": {
+          "n": 4019,
+          "observed_fg": 0.47151032595172926,
+          "mean_pred": 0.46443595707710356,
+          "mean_signed_error": -0.007074368874625753,
+          "mean_abs_error": 0.4259887827079112,
+          "log_loss": 0.6131966322087758,
+          "brier": 0.2141296934375906,
+          "roc_auc": 0.6949174902732436,
+          "ece_quantile10": 0.014577075741392774,
+          "ece_uniform10": 0.01508366773865425,
+          "calibration_slope": 0.9789907522386891,
+          "calibration_intercept": 0.028191744395053907,
+          "mean_pred_on_makes": 0.540770235828439,
+          "mean_pred_on_misses": 0.3963316923719336
+        }
+      }
+    },
+    "catboost": {
+      "tuned": {
+        "family": "catboost",
+        "params": {
+          "depth": 2,
+          "learning_rate": 0.03822726574649208,
+          "l2_leaf_reg": 1.1240768803005543,
+          "random_strength": 4.546602010393911,
+          "bagging_temperature": 0.5175599632000338
+        },
+        "cv_log_loss": 0.6113246675289068,
+        "n_estimators": 521,
+        "fold_log_loss": [
+          0.6201253950729999,
+          0.6045129880788209,
+          0.6086433979263732,
+          0.5860514455836011
+        ],
+        "n_trials": 25,
+        "seconds": 113.7
+      },
+      "calib": {
+        "method": "none",
+        "crossfit_log_loss": {
+          "none": 0.6115451436306159,
+          "platt": 0.6116100703639913,
+          "isotonic": 0.620001590938463
+        },
+        "best_crossfit_log_loss": 0.6115451436306159,
+        "raw": {
+          "n": 4019,
+          "observed_fg": 0.47151032595172926,
+          "mean_pred": 0.46319595015453885,
+          "mean_signed_error": -0.008314375797190406,
+          "mean_abs_error": 0.42581382262938433,
+          "log_loss": 0.6115451436306159,
+          "brier": 0.2132217974017454,
+          "roc_auc": 0.6998650924973541,
+          "ece_quantile10": 0.014105810833579608,
+          "ece_uniform10": 0.014430032436059429,
+          "calibration_slope": 1.019908359219352,
+          "calibration_intercept": 0.04362770007234258,
+          "mean_pred_on_makes": 0.5396408365497615,
+          "mean_pred_on_misses": 0.3949930030175583
+        }
+      }
+    }
+  },
+  "chosen_architecture": "catboost",
+  "feature_sets": {
+    "shot_context_only": {
+      "features": [
+        "is_three",
+        "shot_distance_ft",
+        "loc_x",
+        "loc_y",
+        "abs_loc_x",
+        "shot_angle_deg",
+        "is_corner3",
+        "is_backcourt",
+        "zone_code",
+        "family_code",
+        "act_driving",
+        "act_running",
+        "act_cutting",
+        "act_pullup",
+        "act_stepback",
+        "act_fadeaway",
+        "act_turnaround",
+        "act_floater",
+        "act_hook",
+        "act_layup",
+        "act_dunk",
+        "act_tip_putback",
+        "act_alley_oop",
+        "act_reverse",
+        "act_finger_roll"
+      ],
+      "tuned": {
+        "family": "catboost",
+        "params": {
+          "depth": 6,
+          "learning_rate": 0.022816739880816207,
+          "l2_leaf_reg": 1.3940346079873225,
+          "random_strength": 3.4211651325607844,
+          "bagging_temperature": 0.8803049874792026
+        },
+        "cv_log_loss": 0.6388617255812823,
+        "n_estimators": 304,
+        "fold_log_loss": [
+          0.6385193857560859,
+          0.6384899117051137,
+          0.6442170559173465,
+          0.6289916353792789
+        ],
+        "n_trials": 12,
+        "seconds": 25.4
+      },
+      "calib": {
+        "method": "none",
+        "crossfit_log_loss": {
+          "none": 0.6383128803146068,
+          "platt": 0.6390164347238046,
+          "isotonic": 0.6537910922024468
+        },
+        "best_crossfit_log_loss": 0.6383128803146068,
+        "raw": {
+          "n": 4019,
+          "observed_fg": 0.47151032595172926,
+          "mean_pred": 0.4716061917571993,
+          "mean_signed_error": 9.586580546998946e-05,
+          "mean_abs_error": 0.44818118174731936,
+          "log_loss": 0.6383128803146068,
+          "brier": 0.22483045781461344,
+          "roc_auc": 0.6576345720972526,
+          "ece_quantile10": 0.02433533327190291,
+          "ece_uniform10": 0.012661761520084537,
+          "calibration_slope": 0.9739090951651579,
+          "calibration_intercept": -0.004915288569750929,
+          "mean_pred_on_makes": 0.5248403997967566,
+          "mean_pred_on_misses": 0.4241114534168222
+        }
+      }
+    },
+    "context": {
+      "features": [
+        "is_three",
+        "shot_distance_ft",
+        "loc_x",
+        "loc_y",
+        "abs_loc_x",
+        "shot_angle_deg",
+        "is_corner3",
+        "is_backcourt",
+        "zone_code",
+        "family_code",
+        "act_driving",
+        "act_running",
+        "act_cutting",
+        "act_pullup",
+        "act_stepback",
+        "act_fadeaway",
+        "act_turnaround",
+        "act_floater",
+        "act_hook",
+        "act_layup",
+        "act_dunk",
+        "act_tip_putback",
+        "act_alley_oop",
+        "act_reverse",
+        "act_finger_roll",
+        "period",
+        "period_seconds_remaining",
+        "game_seconds_elapsed",
+        "is_overtime",
+        "end_of_period_heave_window",
+        "is_home",
+        "score_margin_pre",
+        "poss_code",
+        "seconds_since_poss_start",
+        "second_chance",
+        "after_timeout",
+        "shooter_fga_before_game"
+      ],
+      "tuned": {
+        "family": "catboost",
+        "params": {
+          "depth": 3,
+          "learning_rate": 0.02279379523765072,
+          "l2_leaf_reg": 5.958389350068956,
+          "random_strength": 2.1597250932105787,
+          "bagging_temperature": 0.5824582803960838
+        },
+        "cv_log_loss": 0.6392763246085755,
+        "n_estimators": 431,
+        "fold_log_loss": [
+          0.6381687427224272,
+          0.6382147831691304,
+          0.6451666122656958,
+          0.6331571285786252
+        ],
+        "n_trials": 12,
+        "seconds": 24.1
+      },
+      "calib": {
+        "method": "none",
+        "crossfit_log_loss": {
+          "none": 0.6386164901167319,
+          "platt": 0.6394774799216133,
+          "isotonic": 0.655364163286977
+        },
+        "best_crossfit_log_loss": 0.6386164901167319,
+        "raw": {
+          "n": 4019,
+          "observed_fg": 0.47151032595172926,
+          "mean_pred": 0.4714295645814174,
+          "mean_signed_error": -8.076137031189251e-05,
+          "mean_abs_error": 0.4495552456126107,
+          "log_loss": 0.6386164901167319,
+          "brier": 0.22475565263878206,
+          "roc_auc": 0.657990847159489,
+          "ece_quantile10": 0.020845885880303856,
+          "ece_uniform10": 0.011395948454570334,
+          "calibration_slope": 1.0141126653129084,
+          "calibration_intercept": 0.0026934071089964613,
+          "mean_pred_on_makes": 0.5231960126479246,
+          "mean_pred_on_misses": 0.4252443390230224
+        }
+      }
+    },
+    "tracking_only": {
+      "features": [
+        "shot_clock_s",
+        "shot_clock_missing",
+        "contest_distance_in",
+        "contest_height_in",
+        "shot_vertical_in",
+        "shooter_speed_mph",
+        "release_time_s",
+        "release_time_zero",
+        "release_time_capped",
+        "bp_shot_distance_ft",
+        "contest_ratio"
+      ],
+      "tuned": {
+        "family": "catboost",
+        "params": {
+          "depth": 2,
+          "learning_rate": 0.13826189316223855,
+          "l2_leaf_reg": 16.967533607196547,
+          "random_strength": 1.0616955533913808,
+          "bagging_temperature": 0.36364993441420124
+        },
+        "cv_log_loss": 0.6120923944350022,
+        "n_estimators": 192,
+        "fold_log_loss": [
+          0.6201291768797182,
+          0.605845238287605,
+          0.6118672800963858,
+          0.5839929561463194
+        ],
+        "n_trials": 12,
+        "seconds": 33.2
+      },
+      "calib": {
+        "method": "none",
+        "crossfit_log_loss": {
+          "none": 0.6174698313288316,
+          "platt": 0.6178110124367874,
+          "isotonic": 0.6219460194024505
+        },
+        "best_crossfit_log_loss": 0.6174698313288316,
+        "raw": {
+          "n": 4019,
+          "observed_fg": 0.47151032595172926,
+          "mean_pred": 0.4697920153280059,
+          "mean_signed_error": -0.0017183106237233865,
+          "mean_abs_error": 0.4290504920451349,
+          "log_loss": 0.6174698313288316,
+          "brier": 0.21576004963165862,
+          "roc_auc": 0.6889410630611829,
+          "ece_quantile10": 0.019012115377995898,
+          "ece_uniform10": 0.0117782705241435,
+          "calibration_slope": 0.9643269256445254,
+          "calibration_intercept": 0.0007061249600980677,
+          "mean_pred_on_makes": 0.5432032142675088,
+          "mean_pred_on_misses": 0.40429567729111415
+        }
+      }
+    },
+    "player_only": {
+      "features": [
+        "pl_fg_all_post",
+        "pl_fg_type_post",
+        "pl_fg_zone_post",
+        "pl_fg_family_post",
+        "pl_smoe_all_post",
+        "pl_smoe_type_post",
+        "pl_smoe_zone_post",
+        "pl_smoe_family_post",
+        "pl_log_att_all",
+        "pl_log_att_zone",
+        "pl_log_att_family",
+        "pl_three_rate",
+        "pl_rim_rate",
+        "pl_smoe_season_sd",
+        "pl_has_history",
+        "pl_season_att"
+      ],
+      "tuned": {
+        "family": "catboost",
+        "params": {
+          "depth": 2,
+          "learning_rate": 0.11495944999555262,
+          "l2_leaf_reg": 18.376569837039092,
+          "random_strength": 0.03773659658146622,
+          "bagging_temperature": 0.13917287095114161
+        },
+        "cv_log_loss": 0.6438645664732002,
+        "n_estimators": 26,
+        "fold_log_loss": [
+          0.6417089859136559,
+          0.6445176251026103,
+          0.6472234089407936,
+          0.6456719921152254
+        ],
+        "n_trials": 12,
+        "seconds": 13.1
+      },
+      "calib": {
+        "method": "none",
+        "crossfit_log_loss": {
+          "none": 0.6468350302569054,
+          "platt": 0.6474356816942556,
+          "isotonic": 0.6477325716509961
+        },
+        "best_crossfit_log_loss": 0.6468350302569054,
+        "raw": {
+          "n": 4019,
+          "observed_fg": 0.47151032595172926,
+          "mean_pred": 0.4712247162172446,
+          "mean_signed_error": -0.0002856097344846264,
+          "mean_abs_error": 0.4578341353556762,
+          "log_loss": 0.6468350302569054,
+          "brier": 0.22807982037966543,
+          "roc_auc": 0.652429080392946,
+          "ece_quantile10": 0.014672536456192474,
+          "ece_uniform10": 0.012902713225059363,
+          "calibration_slope": 1.0611250084239194,
+          "calibration_intercept": 0.01031965937644441,
+          "mean_pred_on_makes": 0.5141996687289297,
+          "mean_pred_on_misses": 0.43288312722965366
+        }
+      }
+    },
+    "tracking_without_player": {
+      "features": [
+        "is_three",
+        "shot_distance_ft",
+        "loc_x",
+        "loc_y",
+        "abs_loc_x",
+        "shot_angle_deg",
+        "is_corner3",
+        "is_backcourt",
+        "zone_code",
+        "family_code",
+        "act_driving",
+        "act_running",
+        "act_cutting",
+        "act_pullup",
+        "act_stepback",
+        "act_fadeaway",
+        "act_turnaround",
+        "act_floater",
+        "act_hook",
+        "act_layup",
+        "act_dunk",
+        "act_tip_putback",
+        "act_alley_oop",
+        "act_reverse",
+        "act_finger_roll",
+        "period",
+        "period_seconds_remaining",
+        "game_seconds_elapsed",
+        "is_overtime",
+        "end_of_period_heave_window",
+        "is_home",
+        "score_margin_pre",
+        "poss_code",
+        "seconds_since_poss_start",
+        "second_chance",
+        "after_timeout",
+        "shooter_fga_before_game",
+        "shot_clock_s",
+        "shot_clock_missing",
+        "contest_distance_in",
+        "contest_height_in",
+        "shot_vertical_in",
+        "shooter_speed_mph",
+        "release_time_s",
+        "release_time_zero",
+        "release_time_capped",
+        "bp_shot_distance_ft",
+        "contest_ratio"
+      ],
+      "tuned": {
+        "family": "catboost",
+        "params": {
+          "depth": 5,
+          "learning_rate": 0.01459007452373112,
+          "l2_leaf_reg": 2.701052774960547,
+          "random_strength": 1.8318092164684585,
+          "bagging_temperature": 0.9121399684340719
+        },
+        "cv_log_loss": 0.6087772984121194,
+        "n_estimators": 746,
+        "fold_log_loss": [
+          0.6182282048138371,
+          0.5986646606432947,
+          0.6054354863126085,
+          0.5875815954521042
+        ],
+        "n_trials": 12,
+        "seconds": 47.7
+      },
+      "calib": {
+        "method": "none",
+        "crossfit_log_loss": {
+          "none": 0.6099466413741608,
+          "platt": 0.6101964320367458,
+          "isotonic": 0.6165214775430335
+        },
+        "best_crossfit_log_loss": 0.6099466413741608,
+        "raw": {
+          "n": 4019,
+          "observed_fg": 0.47151032595172926,
+          "mean_pred": 0.47015867997531025,
+          "mean_signed_error": -0.0013516459764190266,
+          "mean_abs_error": 0.42506087437809575,
+          "log_loss": 0.6099466413741608,
+          "brier": 0.21277769647418784,
+          "roc_auc": 0.6954280518164065,
+          "ece_quantile10": 0.015696678457778043,
+          "ece_uniform10": 0.00877755035342108,
+          "calibration_slope": 1.0022767039247817,
+          "calibration_intercept": 0.006864662460192587,
+          "mean_pred_on_makes": 0.5478227125844869,
+          "mean_pred_on_misses": 0.40086802941297994
+        }
+      }
+    },
+    "context_player": {
+      "features": [
+        "is_three",
+        "shot_distance_ft",
+        "loc_x",
+        "loc_y",
+        "abs_loc_x",
+        "shot_angle_deg",
+        "is_corner3",
+        "is_backcourt",
+        "zone_code",
+        "family_code",
+        "act_driving",
+        "act_running",
+        "act_cutting",
+        "act_pullup",
+        "act_stepback",
+        "act_fadeaway",
+        "act_turnaround",
+        "act_floater",
+        "act_hook",
+        "act_layup",
+        "act_dunk",
+        "act_tip_putback",
+        "act_alley_oop",
+        "act_reverse",
+        "act_finger_roll",
+        "period",
+        "period_seconds_remaining",
+        "game_seconds_elapsed",
+        "is_overtime",
+        "end_of_period_heave_window",
+        "is_home",
+        "score_margin_pre",
+        "poss_code",
+        "seconds_since_poss_start",
+        "second_chance",
+        "after_timeout",
+        "shooter_fga_before_game",
+        "pl_fg_all_post",
+        "pl_fg_type_post",
+        "pl_fg_zone_post",
+        "pl_fg_family_post",
+        "pl_smoe_all_post",
+        "pl_smoe_type_post",
+        "pl_smoe_zone_post",
+        "pl_smoe_family_post",
+        "pl_log_att_all",
+        "pl_log_att_zone",
+        "pl_log_att_family",
+        "pl_three_rate",
+        "pl_rim_rate",
+        "pl_smoe_season_sd",
+        "pl_has_history",
+        "pl_season_att"
+      ],
+      "tuned": {
+        "family": "catboost",
+        "params": {
+          "depth": 2,
+          "learning_rate": 0.13826189316223855,
+          "l2_leaf_reg": 16.967533607196547,
+          "random_strength": 1.0616955533913808,
+          "bagging_temperature": 0.36364993441420124
+        },
+        "cv_log_loss": 0.6403178213443071,
+        "n_estimators": 58,
+        "fold_log_loss": [
+          0.6395888738841521,
+          0.6379830880564902,
+          0.6460007865501743,
+          0.6350342658981979
+        ],
+        "n_trials": 12,
+        "seconds": 23.2
+      },
+      "calib": {
+        "method": "none",
+        "crossfit_log_loss": {
+          "none": 0.6400803987367134,
+          "platt": 0.6409620184969649,
+          "isotonic": 0.6462816076009059
+        },
+        "best_crossfit_log_loss": 0.6400803987367134,
+        "raw": {
+          "n": 4019,
+          "observed_fg": 0.47151032595172926,
+          "mean_pred": 0.47087224009928913,
+          "mean_signed_error": -0.0006380858524401813,
+          "mean_abs_error": 0.44955418699471655,
+          "log_loss": 0.6400803987367134,
+          "brier": 0.22533734489763496,
+          "roc_auc": 0.6610626636654096,
+          "ece_quantile10": 0.02071671630386025,
+          "ece_uniform10": 0.022147455195126124,
+          "calibration_slope": 0.9870434853275581,
+          "calibration_intercept": 0.0007365488743374046,
+          "mean_pred_on_makes": 0.5226061359966431,
+          "mean_pred_on_misses": 0.42471605708352367
+        }
+      }
+    },
+    "full_no_defender": {
+      "features": [
+        "is_three",
+        "shot_distance_ft",
+        "loc_x",
+        "loc_y",
+        "abs_loc_x",
+        "shot_angle_deg",
+        "is_corner3",
+        "is_backcourt",
+        "zone_code",
+        "family_code",
+        "act_driving",
+        "act_running",
+        "act_cutting",
+        "act_pullup",
+        "act_stepback",
+        "act_fadeaway",
+        "act_turnaround",
+        "act_floater",
+        "act_hook",
+        "act_layup",
+        "act_dunk",
+        "act_tip_putback",
+        "act_alley_oop",
+        "act_reverse",
+        "act_finger_roll",
+        "period",
+        "period_seconds_remaining",
+        "game_seconds_elapsed",
+        "is_overtime",
+        "end_of_period_heave_window",
+        "is_home",
+        "score_margin_pre",
+        "poss_code",
+        "seconds_since_poss_start",
+        "second_chance",
+        "after_timeout",
+        "shooter_fga_before_game",
+        "shot_clock_s",
+        "shot_clock_missing",
+        "contest_distance_in",
+        "contest_height_in",
+        "shot_vertical_in",
+        "shooter_speed_mph",
+        "release_time_s",
+        "release_time_zero",
+        "release_time_capped",
+        "bp_shot_distance_ft",
+        "contest_ratio",
+        "pl_fg_all_post",
+        "pl_fg_type_post",
+        "pl_fg_zone_post",
+        "pl_fg_family_post",
+        "pl_smoe_all_post",
+        "pl_smoe_type_post",
+        "pl_smoe_zone_post",
+        "pl_smoe_family_post",
+        "pl_log_att_all",
+        "pl_log_att_zone",
+        "pl_log_att_family",
+        "pl_three_rate",
+        "pl_rim_rate",
+        "pl_smoe_season_sd",
+        "pl_has_history",
+        "pl_season_att",
+        "pl_fg_def_range_post",
+        "pl_fg_def_range_vs_league"
+      ],
+      "tuned": {
+        "family": "catboost",
+        "params": {
+          "depth": 2,
+          "learning_rate": 0.11495944999555262,
+          "l2_leaf_reg": 18.376569837039092,
+          "random_strength": 0.03773659658146622,
+          "bagging_temperature": 0.13917287095114161
+        },
+        "cv_log_loss": 0.6108908833133302,
+        "n_estimators": 134,
+        "fold_log_loss": [
+          0.6195449684144488,
+          0.6021414725946941,
+          0.6087434436593836,
+          0.5885098757498494
+        ],
+        "n_trials": 12,
+        "seconds": 51.6
+      },
+      "calib": {
+        "method": "none",
+        "crossfit_log_loss": {
+          "none": 0.6128687208628618,
+          "platt": 0.6132483856479042,
+          "isotonic": 0.6209785554509409
+        },
+        "best_crossfit_log_loss": 0.6128687208628618,
+        "raw": {
+          "n": 4019,
+          "observed_fg": 0.47151032595172926,
+          "mean_pred": 0.4702598982038276,
+          "mean_signed_error": -0.0012504277479017097,
+          "mean_abs_error": 0.42678408944840596,
+          "log_loss": 0.6128687208628618,
+          "brier": 0.2137556957508116,
+          "roc_auc": 0.6977981257049723,
+          "ece_quantile10": 0.014815943646107319,
+          "ece_uniform10": 0.009543682912370663,
+          "calibration_slope": 0.9984530767508338,
+          "calibration_intercept": 0.005481313176500342,
+          "mean_pred_on_makes": 0.5461027111841792,
+          "mean_pred_on_misses": 0.4025941116700392
+        }
+      }
+    },
+    "full": {
+      "features": [
+        "is_three",
+        "shot_distance_ft",
+        "loc_x",
+        "loc_y",
+        "abs_loc_x",
+        "shot_angle_deg",
+        "is_corner3",
+        "is_backcourt",
+        "zone_code",
+        "family_code",
+        "act_driving",
+        "act_running",
+        "act_cutting",
+        "act_pullup",
+        "act_stepback",
+        "act_fadeaway",
+        "act_turnaround",
+        "act_floater",
+        "act_hook",
+        "act_layup",
+        "act_dunk",
+        "act_tip_putback",
+        "act_alley_oop",
+        "act_reverse",
+        "act_finger_roll",
+        "period",
+        "period_seconds_remaining",
+        "game_seconds_elapsed",
+        "is_overtime",
+        "end_of_period_heave_window",
+        "is_home",
+        "score_margin_pre",
+        "poss_code",
+        "seconds_since_poss_start",
+        "second_chance",
+        "after_timeout",
+        "shooter_fga_before_game",
+        "shot_clock_s",
+        "shot_clock_missing",
+        "contest_distance_in",
+        "contest_height_in",
+        "shot_vertical_in",
+        "shooter_speed_mph",
+        "release_time_s",
+        "release_time_zero",
+        "release_time_capped",
+        "bp_shot_distance_ft",
+        "contest_ratio",
+        "pl_fg_all_post",
+        "pl_fg_type_post",
+        "pl_fg_zone_post",
+        "pl_fg_family_post",
+        "pl_smoe_all_post",
+        "pl_smoe_type_post",
+        "pl_smoe_zone_post",
+        "pl_smoe_family_post",
+        "pl_log_att_all",
+        "pl_log_att_zone",
+        "pl_log_att_family",
+        "pl_three_rate",
+        "pl_rim_rate",
+        "pl_smoe_season_sd",
+        "pl_has_history",
+        "pl_season_att",
+        "pl_fg_def_range_post",
+        "pl_fg_def_range_vs_league",
+        "def_smoe_allowed_post",
+        "def_contests_season"
+      ],
+      "tuned": {
+        "family": "catboost",
+        "params": {
+          "depth": 2,
+          "learning_rate": 0.03822726574649208,
+          "l2_leaf_reg": 1.1240768803005543,
+          "random_strength": 4.546602010393911,
+          "bagging_temperature": 0.5175599632000338
+        },
+        "cv_log_loss": 0.6113246675289068,
+        "n_estimators": 521,
+        "fold_log_loss": [
+          0.6201253950729999,
+          0.6045129880788209,
+          0.6086433979263732,
+          0.5860514455836011
+        ],
+        "n_trials": 25,
+        "seconds": 113.7
+      },
+      "calib": {
+        "method": "none",
+        "crossfit_log_loss": {
+          "none": 0.6115451436306159,
+          "platt": 0.6116100703639913,
+          "isotonic": 0.620001590938463
+        },
+        "best_crossfit_log_loss": 0.6115451436306159,
+        "raw": {
+          "n": 4019,
+          "observed_fg": 0.47151032595172926,
+          "mean_pred": 0.46319595015453885,
+          "mean_signed_error": -0.008314375797190406,
+          "mean_abs_error": 0.42581382262938433,
+          "log_loss": 0.6115451436306159,
+          "brier": 0.2132217974017454,
+          "roc_auc": 0.6998650924973541,
+          "ece_quantile10": 0.014105810833579608,
+          "ece_uniform10": 0.014430032436059429,
+          "calibration_slope": 1.019908359219352,
+          "calibration_intercept": 0.04362770007234258,
+          "mean_pred_on_makes": 0.5396408365497615,
+          "mean_pred_on_misses": 0.3949930030175583
+        }
+      }
+    }
+  },
+  "final_feature_set": "tracking_without_player",
+  "model_version": "master_master_v1_20261104T210006",
+  "artifact": "models/master/master_master_v1_20261104T210006",
+  "packages": {
+    "python": "3.14.7",
+    "numpy": "2.5.4",
+    "pandas": "3.0.6",
+    "scikit-learn": "1.9.1",
+    "xgboost": "3.4.1",
+    "lightgbm": "4.7.0",
+    "catboost": "1.2.10",
+    "optuna": "5.0.0",
+    "shap": "0.54.1",
+    "scipy": "1.18.1",
+    "pyyaml": "6.0.3"
+  },
+  "configs": {
+    "features": {
+      "dataset_version": "master_v1",
+      "history": {
+        "season_weights": {
+          "2024-25": 1.0,
+          "2023-24": 0.75,
+          "2022-23": 0.5
+        },
+        "last_season_dash": "2025-26"
+      },
+      "priors": {
+        "k_fg_all": 150,
+        "k_fg_type": 200,
+        "k_fg_zone": 150,
+        "k_fg_family": 200,
+        "k_fg_range": 150,
+        "k_smoe": 250,
+        "k_rate": 100,
+        "k_def": 150,
+        "w_dash_last": 1.0,
+        "in_season_weight": 1.0
+      },
+      "groups": {
+        "shot_context": [
+          "is_three",
+          "shot_distance_ft",
+          "loc_x",
+          "loc_y",
+          "abs_loc_x",
+          "shot_angle_deg",
+          "is_corner3",
+          "is_backcourt",
+          "zone_code",
+          "family_code",
+          "act_driving",
+          "act_running",
+          "act_cutting",
+          "act_pullup",
+          "act_stepback",
+          "act_fadeaway",
+          "act_turnaround",
+          "act_floater",
+          "act_hook",
+          "act_layup",
+          "act_dunk",
+          "act_tip_putback",
+          "act_alley_oop",
+          "act_reverse",
+          "act_finger_roll"
+        ],
+        "game_context": [
+          "period",
+          "period_seconds_remaining",
+          "game_seconds_elapsed",
+          "is_overtime",
+          "end_of_period_heave_window",
+          "is_home",
+          "score_margin_pre",
+          "poss_code",
+          "seconds_since_poss_start",
+          "second_chance",
+          "after_timeout",
+          "shooter_fga_before_game"
+        ],
+        "tracking": [
+          "shot_clock_s",
+          "shot_clock_missing",
+          "contest_distance_in",
+          "contest_height_in",
+          "shot_vertical_in",
+          "shooter_speed_mph",
+          "release_time_s",
+          "release_time_zero",
+          "release_time_capped",
+          "bp_shot_distance_ft",
+          "contest_ratio"
+        ],
+        "player": [
+          "pl_fg_all_post",
+          "pl_fg_type_post",
+          "pl_fg_zone_post",
+          "pl_fg_family_post",
+          "pl_smoe_all_post",
+          "pl_smoe_type_post",
+          "pl_smoe_zone_post",
+          "pl_smoe_family_post",
+          "pl_log_att_all",
+          "pl_log_att_zone",
+          "pl_log_att_family",
+          "pl_three_rate",
+          "pl_rim_rate",
+          "pl_smoe_season_sd",
+          "pl_has_history",
+          "pl_season_att"
+        ],
+        "player_tracking": [
+          "pl_fg_def_range_post",
+          "pl_fg_def_range_vs_league"
+        ],
+        "defender": [
+          "def_smoe_allowed_post",
+          "def_contests_season"
+        ]
+      },
+      "forbidden": [
+        "made",
+        "SHOT_MADE_FLAG",
+        "EVENT_TYPE",
+        "nba_xfg",
+        "nba_xpts_fg",
+        "bp_xpts_fg_only",
+        "home_score_after",
+        "away_score_after",
+        "pbp_scoreHome",
+        "pbp_scoreAway",
+        "pbp_description",
+        "pbp_shotResult",
+        "featured",
+        "model_a_xfg",
+        "actual_fg_points",
+        "shooter_fgm_before_game"
+      ]
+    },
+    "training": {
+      "seed": 42,
+      "split": {
+        "test_fraction_games": 0.2,
+        "calibration_fraction_games": 0.15,
+        "rolling_folds": 4,
+        "min_train_games_first_fold": 20
+      },
+      "row_filter": "in_blueprint",
+      "candidates": [
+        "logistic",
+        "xgboost",
+        "lightgbm",
+        "catboost"
+      ],
+      "optuna": {
+        "n_trials": {
+          "logistic": 25,
+          "xgboost": 40,
+          "lightgbm": 40,
+          "catboost": 25
+        },
+        "timeout_s_per_model": 900
+      },
+      "early_stopping_rounds": 50,
+      "max_boosting_rounds": 2000,
+      "calibration_methods": [
+        "none",
+        "platt",
+        "isotonic"
+      ],
+      "feature_sets": {
+        "shot_context_only": [
+          "shot_context"
+        ],
+        "context": [
+          "shot_context",
+          "game_context"
+        ],
+        "tracking_only": [
+          "tracking"
+        ],
+        "player_only": [
+          "player"
+        ],
+        "tracking_without_player": [
+          "shot_context",
+          "game_context",
+          "tracking"
+        ],
+        "context_player": [
+          "shot_context",
+          "game_context",
+          "player"
+        ],
+        "full_no_defender": [
+          "shot_context",
+          "game_context",
+          "tracking",
+          "player",
+          "player_tracking"
+        ],
+        "full": [
+          "shot_context",
+          "game_context",
+          "tracking",
+          "player",
+          "player_tracking",
+          "defender"
+        ]
+      },
+      "final_feature_set_candidates": [
+        "tracking_without_player",
+        "full_no_defender",
+        "full"
+      ]
+    }
+  }
+}

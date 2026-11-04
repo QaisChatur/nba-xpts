@@ -1,0 +1,19 @@
+# Evaluation settings for pipeline/evaluation and pipeline/training/evaluate.py
+primary_metric: log_loss
+bootstrap:
+  n_boot: 2000
+  cluster: GAME_ID           # game-cluster bootstrap for CIs and paired differences
+calibration_bins: 10
+segments:
+  - shot_type
+  - zone_group
+  - action_family
+  - contest_bin
+  - shot_clock_bin
+  - pl_has_history
+contest_bins_in: [0, 24, 48, 72, 1000]          # inches: <2 ft, 2-4 ft, 4-6 ft, 6+ ft
+contest_labels: ["0-2 ft", "2-4 ft", "4-6 ft", "6+ ft"]
+shot_clock_bins: [-1, 4, 10, 18, 24.1]
+shot_clock_labels: ["0-4 s", "4-10 s", "10-18 s", "18-24 s"]
+examples:
+  n_random: 20               # held-out shot examples in the report: a seeded random sample, not cherry-picked

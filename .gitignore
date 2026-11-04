@@ -1,11 +1,55 @@
+# ---- Python / tooling
 __pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
 .ipynb_checkpoints/
-.env
-venv/
+catboost_info/
+mlruns/
+optuna*.db
+
+# ---- environments and secrets
 .venv/
+venv/
+env/
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+credentials*.json
+secrets*.json
+
+# ---- OS / editors
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# ---- data: kept outside Git (see docs/DATA_FILES.md for locations and restore steps)
 data/raw/
+data/interim/
 data/processed/
 *.csv
+*.csv.gz
 *.parquet
+*.json.gz
+*.html
+# small, curated fixtures used by tests and CI are committed
+!data/samples/
+!data/samples/**
+
+# ---- model binaries: kept outside Git; metadata, metrics and schemas are committed
 *.pkl
-.DS_Store
+*.joblib
+*.cbm
+*.ubj
+models/experiments/
+models/**/*.bin
